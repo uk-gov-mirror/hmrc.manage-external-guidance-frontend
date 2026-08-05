@@ -36,42 +36,42 @@ trait MockProcessAdminService extends TestSuite with MockFactory {
 
     def publishedSummaries: CallHandler[Future[RequestOutcome[List[ProcessSummary]]]] =
       (mockProcessAdminService
-        .publishedSummaries(_: ExecutionContext, _: HeaderCarrier))
+        .publishedSummaries(using _: ExecutionContext, _: HeaderCarrier))
         .expects(*, *)
 
     def approvalSummaries: CallHandler[Future[RequestOutcome[List[ProcessSummary]]]] =
       (mockProcessAdminService
-        .approvalSummaries(_: ExecutionContext, _: HeaderCarrier))
+        .approvalSummaries(using _: ExecutionContext, _: HeaderCarrier))
         .expects(*, *)
 
     def archivedSummaries: CallHandler[Future[RequestOutcome[List[ProcessSummary]]]] =
       (mockProcessAdminService
-        .archivedSummaries(_: ExecutionContext, _: HeaderCarrier))
+        .archivedSummaries(using _: ExecutionContext, _: HeaderCarrier))
         .expects(*, *)
 
     def activeSummaries: CallHandler[Future[RequestOutcome[List[CachedProcessSummary]]]] =
       (mockProcessAdminService
-        .activeSummaries(_: ExecutionContext, _: HeaderCarrier))
+        .activeSummaries(using _: ExecutionContext, _: HeaderCarrier))
         .expects(*, *)
 
     def getPublishedByProcessCode(code: String): CallHandler[Future[RequestOutcome[JsValue]]] =
       (mockProcessAdminService
-        .getPublishedByProcessCode(_: String)(_: ExecutionContext, _: HeaderCarrier))
+        .getPublishedByProcessCode(_: String)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(code, *, *)
 
     def getApprovalByProcessCode(code: String): CallHandler[Future[RequestOutcome[JsValue]]] =
       (mockProcessAdminService
-        .getApprovalByProcessCode(_: String)(_: ExecutionContext, _: HeaderCarrier))
+        .getApprovalByProcessCode(_: String)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(code, *, *)
 
     def getArchivedById(id: String): CallHandler[Future[RequestOutcome[JsValue]]] =
       (mockProcessAdminService
-        .getArchivedById(_: String)(_: ExecutionContext, _: HeaderCarrier))
+        .getArchivedById(_: String)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(id, *, *)
     
     def getActive(id: String, version: Long, timescalesVersion: Option[Long], ratesVersion: Option[Long]): CallHandler[Future[RequestOutcome[JsValue]]] =
       (mockProcessAdminService
-        .getActive(_: String, _: Long, _: Option[Long], _: Option[Long])(_: ExecutionContext, _: HeaderCarrier))
+        .getActive(_: String, _: Long, _: Option[Long], _: Option[Long])(using _: ExecutionContext, _: HeaderCarrier))
         .expects(id, version, timescalesVersion, ratesVersion, *, *)
 
   }

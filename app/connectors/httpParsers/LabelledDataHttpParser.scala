@@ -19,14 +19,14 @@ package connectors.httpParsers
 import models.errors.{ForbiddenError, ValidationError, InternalServerError}
 import models.RequestOutcome
 import play.api.Logger
-import play.api.http.Status._
+import play.api.http.Status.*
 import uk.gov.hmrc.http.HttpReads
 import models.LabelledDataUpdateStatus
 
 object LabelledDataHttpParser extends HttpParser {
   val logger: Logger = Logger(getClass)
 
-  implicit val labelledDataHttpReads: HttpReads[RequestOutcome[LabelledDataUpdateStatus]] = {
+  given labelledDataHttpReads: HttpReads[RequestOutcome[LabelledDataUpdateStatus]] = {
     case (_, _, response) if response.status == OK || response.status == ACCEPTED =>
       response.validateJson[LabelledDataUpdateStatus] match {
         case Some(response)  => Right(response)

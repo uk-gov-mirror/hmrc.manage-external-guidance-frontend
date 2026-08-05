@@ -37,7 +37,7 @@ class TwoEyePageReviewControllerSpec extends ControllerBaseSpec with GuiceOneApp
 
   private trait Test extends ReviewData {
 
-    implicit val hc: HeaderCarrier = HeaderCarrier()
+    given hc: HeaderCarrier = HeaderCarrier()
 
     val errorHandler = injector.instanceOf[ErrorHandler]
     val view = injector.instanceOf[twoeye_page_review]

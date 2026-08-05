@@ -16,7 +16,7 @@
 
 @this(layout: main_layout)
 
-@()(implicit request: RequestHeader, messages: Messages)
+@()(using request: RequestHeader, messages: Messages)
 
 @layout(s"${messages(s"2iReviewComplete.heading.published")} - ${messages("2iReview.heading")}") {
 

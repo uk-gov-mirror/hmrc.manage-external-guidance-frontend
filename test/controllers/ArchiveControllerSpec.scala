@@ -49,7 +49,7 @@ class ArchiveControllerSpec
     private val view = app.injector.instanceOf[unpublish_confirmation]
     private val confirmation = app.injector.instanceOf[unpublished]
     lazy val errorHandler: ErrorHandler = app.injector.instanceOf[config.ErrorHandler]
-    implicit val hc: HeaderCarrier = HeaderCarrier()
+    given hc: HeaderCarrier = HeaderCarrier()
 
     val adminService = new AdminService(mockApprovalConnector, mockPublishedConnector, mockArchiveConnector)
     val formProvider = new UnpublishConfirmationFormProvider()

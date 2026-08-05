@@ -17,9 +17,10 @@
 package controllers
 
 import config.AppConfig
+
 import javax.inject.{Inject, Singleton}
 import play.api.i18n.I18nSupport
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.Future
@@ -29,9 +30,10 @@ class AccessibilityStatementController @Inject() (appConfig: AppConfig, mcc: Mes
     extends FrontendController(mcc)
     with I18nSupport {
 
-  implicit val config: AppConfig = appConfig
+  given config: AppConfig = appConfig
 
-  val getPage: Action[AnyContent] = Action.async { implicit request =>
+  val getPage: Action[AnyContent] = Action.async { request =>
+    given Request[AnyContent] = request
     Future.successful(Ok(view()))
   }
 

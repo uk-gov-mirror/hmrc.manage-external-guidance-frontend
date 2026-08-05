@@ -19,7 +19,7 @@ package connectors.httpParsers
 import models.errors.{InternalServerError, InvalidProcessError}
 import models.{PublishedProcess, RequestOutcome, ProcessSummary}
 import play.api.Logger
-import play.api.http.Status._
+import play.api.http.Status.*
 import uk.gov.hmrc.http.HttpReads
 import play.api.libs.json.JsValue
 
@@ -27,7 +27,7 @@ object PublishedProcessHttpParser extends HttpParser {
 
   val logger: Logger = Logger(getClass)
 
-  implicit val publishedProcessHttpReads: HttpReads[RequestOutcome[PublishedProcess]] = {
+  given publishedProcessHttpReads: HttpReads[RequestOutcome[PublishedProcess]] = {
     case (_, _, response) if response.status == OK =>
       response.validateJson[PublishedProcess] match {
         case Some(result) => Right(result)
@@ -39,7 +39,7 @@ object PublishedProcessHttpParser extends HttpParser {
     case (_, _, response) => Left(response.checkErrorResponse)
   }
 
-  implicit val processHttpReads: HttpReads[RequestOutcome[JsValue]] = {
+  given processHttpReads: HttpReads[RequestOutcome[JsValue]] = {
     case (_, _, response) if response.status == OK =>
       response.validateJson[JsValue] match {
         case Some(result) => Right(result)
@@ -51,7 +51,7 @@ object PublishedProcessHttpParser extends HttpParser {
     case (_, _, response) => Left(response.checkErrorResponse)
   }
 
-  implicit val processSummaryHttpReads: HttpReads[RequestOutcome[List[ProcessSummary]]] = {
+  given processSummaryHttpReads: HttpReads[RequestOutcome[List[ProcessSummary]]] = {
     case (_, _, response) if response.status == OK =>
       response.validateJson[List[ProcessSummary]] match {
         case Some(result) => Right(result)

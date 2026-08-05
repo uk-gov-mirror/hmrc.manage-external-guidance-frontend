@@ -71,7 +71,7 @@ class ScratchHttpParserSpec extends BaseSpec with HttpVerbs with Status {
 
       result match {
         case Left(err) if err == processError => succeed
-        case err => fail()
+        case _ => fail()
       }
     }
 

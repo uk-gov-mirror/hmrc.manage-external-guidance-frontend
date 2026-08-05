@@ -35,7 +35,7 @@ class ReviewServiceSpec extends BaseSpec {
 
   private trait Test extends MockReviewConnector with ReviewData {
 
-    implicit val hc: HeaderCarrier = HeaderCarrier()
+    given hc: HeaderCarrier = HeaderCarrier()
     val approvalProcessSummary: ApprovalProcessSummary = ApprovalProcessSummary("id", "title", LocalDate.now, ApprovalStatus.Published, ReviewType2i, 1)
     val auditInfo: AuditInfo = AuditInfo("credential", id, "title", 1, "author", 2, 2)
 
@@ -73,7 +73,7 @@ class ReviewServiceSpec extends BaseSpec {
         result.onComplete {
           case Success(response) =>
             response match {
-              case Right(approvalProcessReview) => fail("Approval process review returned when error expected")
+              case Right(_) => fail("Approval process review returned when error expected")
               case Left(error) => error shouldBe InternalServerError
             }
           case Failure(exception) => fail(s"Future onComplete returned unexpected error : ${exception.getMessage}")
@@ -216,7 +216,7 @@ class ReviewServiceSpec extends BaseSpec {
         result.onComplete {
           case Success(response) =>
             response match {
-              case Right(approvalProcessReview) => fail("Approval process review returned when error expected")
+              case Right(_) => fail("Approval process review returned when error expected")
               case Left(error) => error shouldBe InternalServerError
             }
           case Failure(exception) => fail(s"Future onComplete returned unexpected error : ${exception.getMessage}")
@@ -238,7 +238,7 @@ class ReviewServiceSpec extends BaseSpec {
         result.onComplete {
           case Success(response) =>
             response match {
-              case Right(approvalProcessSummary) => succeed
+              case Right(_) => succeed
               case Left(error) => fail(s"Unexpected error returned by mock review connector : ${error.toString}")
             }
           case Failure(exception) => fail(s"Future onComplete returned unexpected error : ${exception.getMessage}")

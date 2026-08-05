@@ -18,7 +18,7 @@ package connectors.httpParsers
 
 
 import base.BaseSpec
-import connectors.httpParsers.ActiveProcessHttpParser._
+import connectors.httpParsers.ActiveProcessHttpParser.{processHttpReads, summaryHttpReads}
 import java.time.Instant
 import play.api.http.{HttpVerbs, Status}
 import play.api.libs.json.{JsValue, Json}

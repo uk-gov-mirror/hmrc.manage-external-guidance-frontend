@@ -20,7 +20,7 @@ import config.AppConfig
 import models.errors.{Error, InvalidProcessError}
 import models.{ApprovalResponse, RequestOutcome}
 import play.api.libs.json.{JsValue, Json}
-import play.api.mvc._
+import play.api.mvc.*
 import services.ApprovalService
 import uk.gov.hmrc.play.bootstrap.controller.WithUnsafeDefaultFormBinding
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -31,8 +31,8 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class ApprovalController @Inject() (appConfig: AppConfig, approvalService: ApprovalService, mcc: MessagesControllerComponents) extends FrontendController(mcc) with WithUnsafeDefaultFormBinding {
 
-  implicit val config: AppConfig = appConfig
-  implicit val ec: ExecutionContext = mcc.executionContext
+  given config: AppConfig = appConfig
+  given ec: ExecutionContext = mcc.executionContext
 
   val corsHeaders: Seq[(String, String)] = Seq(
     "Access-Control-Allow-Origin" -> "*",
@@ -40,11 +40,13 @@ class ApprovalController @Inject() (appConfig: AppConfig, approvalService: Appro
     "Access-Control-Allow-Methods" -> "POST, OPTIONS"
   )
 
-  def submitFor2iReview(): Action[JsValue] = Action.async(parse.json) { implicit request: Request[JsValue] =>
+  def submitFor2iReview: Action[JsValue] = Action.async(parse.json) { request =>
+    given Request[JsValue] = request
     checkSubmissionReturn(approvalService.submitFor2iReview(request.body))
   }
 
-  def submitForFactCheck(): Action[JsValue] = Action.async(parse.json) { implicit request: Request[JsValue] =>
+  def submitForFactCheck: Action[JsValue] = Action.async(parse.json) { request =>
+    given Request[JsValue] = request  
     checkSubmissionReturn(approvalService.submitForFactCheck(request.body))
   }
 

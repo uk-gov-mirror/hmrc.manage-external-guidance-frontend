@@ -19,8 +19,9 @@ package endpoints
 import java.util.UUID
 
 import play.api.http.Status
+import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 import play.api.libs.ws.WSResponse
-import play.api.libs.json._
+import play.api.libs.json.*
 import models.errors.{Error, InternalServerError, InvalidProcessError}
 import stubs.{AuditStub, ExternalGuidanceStub}
 import support.IntegrationSpec

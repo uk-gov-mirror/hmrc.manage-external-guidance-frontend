@@ -31,7 +31,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class AuditServiceSpec extends BaseSpec {
 
   private trait Test extends MockAuditConnector {
-    implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
+    given headerCarrier: HeaderCarrier = HeaderCarrier()
     lazy val auditService: AuditService = new AuditService(MockAppConfig, mockAuditConnector)
     val PID: String = "SomeonePID"
     val processID: String = "ext90002"

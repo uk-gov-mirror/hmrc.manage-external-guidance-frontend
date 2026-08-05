@@ -27,7 +27,7 @@ import views.html.components.yesno_radios
 
 import scala.jdk.CollectionConverters._
 
-class RadiosWithSubHeadingSpec extends ViewSpecBase with GuiceOneAppPerSuite {
+class YesNoRadiosSpec extends ViewSpecBase with GuiceOneAppPerSuite {
 
   val pageUrl = "/url"
   val pageTitle = "Some Page Title"
@@ -39,11 +39,7 @@ class RadiosWithSubHeadingSpec extends ViewSpecBase with GuiceOneAppPerSuite {
   trait Test {
     private def injector: Injector = app.injector
     def messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
-    implicit def messages: Messages = messagesApi.preferred(Seq(Lang("en")))
-  }
-
-  trait WelshTest extends Test {
-    implicit override def messages: Messages = messagesApi.preferred(Seq(Lang("cy")))
+    given messages: Messages = messagesApi.preferred(Seq(Lang("en")))
   }
 
   "yesno_radios generated Html" must {

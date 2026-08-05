@@ -20,7 +20,7 @@ import config.AppConfig
 import models.audit.AuditEvent
 import play.api.Logger
 import play.api.http.HeaderNames
-import play.api.libs.json._
+import play.api.libs.json.*
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.audit.AuditExtensions
 import uk.gov.hmrc.play.audit.http.connector.AuditConnector
@@ -35,7 +35,7 @@ class AuditService @Inject() (appConfig: AppConfig, auditConnector: AuditConnect
   private val logger = Logger(getClass)
   private val referrer: HeaderCarrier => String = _.headers(Seq(HeaderNames.REFERER)).headOption.fold("-")(_._2)
 
-  private def toExtendedDataEvent(event: AuditEvent, path: Option[String])(implicit hc: HeaderCarrier): ExtendedDataEvent =
+  private def toExtendedDataEvent(event: AuditEvent, path: Option[String])(using hc: HeaderCarrier): ExtendedDataEvent =
     ExtendedDataEvent(
       auditSource = appConfig.appName,
       auditType = event.auditType,
@@ -43,7 +43,7 @@ class AuditService @Inject() (appConfig: AppConfig, auditConnector: AuditConnect
       detail = Json.toJson(AuditExtensions.auditHeaderCarrier(hc).toAuditDetails()).as[JsObject].deepMerge(event.detail.as[JsObject])
     )
 
-  def audit(event: AuditEvent, path: Option[String] = None)(implicit hc: HeaderCarrier, context: ExecutionContext): Future[Unit] =
+  def audit(event: AuditEvent, path: Option[String] = None)(using hc: HeaderCarrier, context: ExecutionContext): Future[Unit] =
     auditConnector.sendExtendedEvent(toExtendedDataEvent(event, path)).map {
       case Success => logger.info(s"Audit successful: $path - $event ")
       case Failure(err, _) => logger.warn(s"Audit failed with error $err")

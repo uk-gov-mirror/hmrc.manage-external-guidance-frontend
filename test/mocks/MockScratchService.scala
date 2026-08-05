@@ -34,7 +34,7 @@ trait MockScratchService extends TestSuite with MockFactory {
     def scratchProcess(process: JsValue): CallHandler[Future[RequestOutcome[ScratchResponse]]] = {
 
       (mockScratchService
-        .submitScratchProcess(_: JsValue)(_: ExecutionContext, _: HeaderCarrier))
+        .submitScratchProcess(_: JsValue)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(process, *, *)
     }
 

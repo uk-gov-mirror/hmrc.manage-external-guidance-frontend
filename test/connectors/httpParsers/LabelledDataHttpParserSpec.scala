@@ -19,7 +19,7 @@ package connectors.httpParsers
 import java.time.ZonedDateTime
 
 import base.BaseSpec
-import connectors.httpParsers.LabelledDataHttpParser._
+import connectors.httpParsers.LabelledDataHttpParser.labelledDataHttpReads
 import models.{LabelledDataUpdateStatus, UpdateDetails}
 import play.api.http.{HttpVerbs, Status}
 import play.api.libs.json.{JsValue, Json}

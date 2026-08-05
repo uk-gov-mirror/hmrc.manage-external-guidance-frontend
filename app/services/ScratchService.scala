@@ -27,7 +27,7 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class ScratchService @Inject() (scratchConnector: ScratchConnector) {
 
-  def submitScratchProcess(process: JsValue)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[ScratchResponse]] = {
+  def submitScratchProcess(process: JsValue)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[ScratchResponse]] = {
     scratchConnector.submitScratchProcess(process)
   }
 

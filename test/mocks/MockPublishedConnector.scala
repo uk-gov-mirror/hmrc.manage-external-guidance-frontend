@@ -34,18 +34,18 @@ trait MockPublishedConnector extends TestSuite with MockFactory {
 
     def summaries: CallHandler[Future[RequestOutcome[List[ProcessSummary]]]] =
       (mockPublishedConnector
-        .summaries(_: ExecutionContext, _: HeaderCarrier))
+        .summaries(using _: ExecutionContext, _: HeaderCarrier))
         .expects(*, *)
 
     def getPublished(id: String): CallHandler[Future[RequestOutcome[PublishedProcess]]] = {
       (mockPublishedConnector
-        .getPublished(_: String)(_: ExecutionContext, _: HeaderCarrier))
+        .getPublished(_: String)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(id, *, *)
     }
 
     def getPublishedByProcessCode(code: String): CallHandler[Future[RequestOutcome[JsValue]]] = {
       (mockPublishedConnector
-        .getPublishedByProcessCode(_: String)(_: ExecutionContext, _: HeaderCarrier))
+        .getPublishedByProcessCode(_: String)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(code, *, *)
     }
 

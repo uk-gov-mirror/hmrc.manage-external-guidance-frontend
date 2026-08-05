@@ -23,5 +23,5 @@ case class ApprovalResponse(id: String)
 
 object ApprovalResponse {
 
-  implicit val formats: OFormat[ApprovalResponse] = Json.format[ApprovalResponse]
+  given formats: OFormat[ApprovalResponse] = Json.format[ApprovalResponse]
 }

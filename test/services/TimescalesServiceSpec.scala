@@ -30,7 +30,7 @@ import scala.util.{Failure, Success}
 class TimescalesServiceSpec extends BaseSpec {
 
   trait Test extends MockTimescalesConnector {
-    implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
+    given headerCarrier: HeaderCarrier = HeaderCarrier()
     lazy val timescalesService: TimescalesService = new TimescalesService(mockTimescalesConnector)
     val dummyTimescales: JsValue = Json.parse("""{"TimescaleID": 10}""")
     val lastUpdateTime: ZonedDateTime = ZonedDateTime.of(2020, 1, 1, 12, 0, 1, 0, ZonedDateTime.now.getZone)

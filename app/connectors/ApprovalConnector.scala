@@ -20,6 +20,7 @@ import config.AppConfig
 import javax.inject.{Inject, Singleton}
 import models.{ApprovalProcessSummary, ApprovalResponse, RequestOutcome, ProcessSummary}
 import play.api.libs.json.{Json, JsValue}
+import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.HttpClientV2
 import scala.concurrent.{ExecutionContext, Future}
@@ -28,7 +29,7 @@ import uk.gov.hmrc.http.StringContextOps
 @Singleton
 class ApprovalConnector @Inject() (httpClient: HttpClientV2, appConfig: AppConfig) {
 
-  def approvalSummaries(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[List[ApprovalProcessSummary]]] = {
+  def approvalSummaries(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[List[ApprovalProcessSummary]]] = {
 
     import connectors.httpParsers.ApprovalHttpParser.getApprovalSummaryListHttpReads
 
@@ -37,7 +38,7 @@ class ApprovalConnector @Inject() (httpClient: HttpClientV2, appConfig: AppConfi
     httpClient.get(url"$summaryEndPoint").execute[RequestOutcome[List[ApprovalProcessSummary]]]
   }
 
-  def submitFor2iReview(process: JsValue)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[ApprovalResponse]] = {
+  def submitFor2iReview(process: JsValue)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[ApprovalResponse]] = {
 
     import connectors.httpParsers.ApprovalHttpParser.saveApprovalHttpReads
 
@@ -46,7 +47,7 @@ class ApprovalConnector @Inject() (httpClient: HttpClientV2, appConfig: AppConfi
     httpClient.post(url"$endpoint").withBody(Json.toJson(process)).execute[RequestOutcome[ApprovalResponse]]
   }
 
-  def submitForFactCheck(process: JsValue)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[ApprovalResponse]] = {
+  def submitForFactCheck(process: JsValue)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[ApprovalResponse]] = {
 
     import connectors.httpParsers.ApprovalHttpParser.saveApprovalHttpReads
 
@@ -55,14 +56,14 @@ class ApprovalConnector @Inject() (httpClient: HttpClientV2, appConfig: AppConfi
     httpClient.post(url"$endpoint").withBody(Json.toJson(process)).execute[RequestOutcome[ApprovalResponse]]
   }
 
-  def summaries(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[List[ProcessSummary]]] = {
+  def summaries(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[List[ProcessSummary]]] = {
     import connectors.httpParsers.PublishedProcessHttpParser.processSummaryHttpReads
 
     val endPoint: String = appConfig.externalGuidanceBaseUrl + "/external-guidance/approval/list"
     httpClient.get(url"$endPoint").execute[RequestOutcome[List[ProcessSummary]]]
   }
 
-  def getApprovalByProcessCode(code: String)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] = {
+  def getApprovalByProcessCode(code: String)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] = {
     val endPoint: String = appConfig.externalGuidanceBaseUrl + s"/external-guidance/approval/code/$code"
 
     import connectors.httpParsers.PublishedProcessHttpParser.processHttpReads

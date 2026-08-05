@@ -63,7 +63,7 @@ class PublishedProcessHttpParserSpec extends BaseSpec with HttpVerbs with Status
       "code"
     )
 
-    implicit val formats: Format[Error] = Json.format[Error]
+    given formats: Format[Error] = Json.format[Error]
     val notFoundErrorJson = Json.toJson(Error("NOT_FOUND_ERROR", Some("The resource requested could not be found."), None))
 
     val processSummary: ProcessSummary = ProcessSummary("id", "code", 1, "author", None, ZonedDateTime.now, "actionedby", "Status")
@@ -157,7 +157,7 @@ class PublishedProcessHttpParserSpec extends BaseSpec with HttpVerbs with Status
 
       result match {
         case Left(err) if err == processError => succeed
-        case err => fail()
+        case _ => fail()
       }
     }
 

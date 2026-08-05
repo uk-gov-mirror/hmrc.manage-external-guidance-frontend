@@ -43,15 +43,15 @@ import models.errors.ForbiddenError
 class RatesControllerSpec extends ControllerBaseSpec with GuiceOneAppPerSuite with MockRatesService {
 
   private trait Test {
-    implicit val hc: HeaderCarrier = HeaderCarrier()
+    given hc: HeaderCarrier = HeaderCarrier()
     val errorHandler: ErrorHandler = injector.instanceOf[ErrorHandler]
     def messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
-    implicit val messages: Messages = messagesApi.preferred(FakeRequest("GET", "/"))
+    given messages: Messages = messagesApi.preferred(FakeRequest("GET", "/"))
     val view: upload_rates = injector.instanceOf[upload_rates]
     val completeView: labelleddata_upload_complete = injector.instanceOf[labelleddata_upload_complete]
     val timscalesJsonString = """{"First": 1, "Second": 2, "Third": 3}"""
     val ratesJson: JsValue = Json.parse(timscalesJsonString)
-    val controller = new RatesController(mockRatesService, FakeLabelledDataAction, errorHandler, view, completeView, messagesControllerComponents)
+    val controller = new RatesController(mockRatesService, FakeLabelledDataAction, view, completeView, messagesControllerComponents)
 
     val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/external-guidance/rates")
     val lastUpdateTime: ZonedDateTime = ZonedDateTime.of(2020, 1, 1, 12, 0, 1, 0, ZonedDateTime.now.getZone)

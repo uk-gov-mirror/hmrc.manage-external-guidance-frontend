@@ -25,9 +25,9 @@ import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
 import scala.concurrent.{Future, ExecutionContext}
 
 @Singleton
-class UnauthorizedReviewErrorHandler @Inject() (val messagesApi: MessagesApi, view: unauthorized_review_error_template, implicit val appConfig: AppConfig, val ec: ExecutionContext)
+class UnauthorizedReviewErrorHandler @Inject() (val messagesApi: MessagesApi, view: unauthorized_review_error_template)(using val appConfig: AppConfig, val ec: ExecutionContext)
     extends FrontendErrorHandler {
 
-  override def standardErrorTemplate(pageTitleKey: String, headingKey: String, messageKey: String)(implicit request: RequestHeader): Future[Html] =
+  override def standardErrorTemplate(pageTitleKey: String, headingKey: String, messageKey: String)(using request: RequestHeader): Future[Html] =
     Future.successful(view(pageTitleKey, headingKey, messageKey))
 }

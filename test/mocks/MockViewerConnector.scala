@@ -35,12 +35,12 @@ trait MockViewerConnector extends TestSuite with MockFactory {
 
     def listActive: CallHandler[Future[RequestOutcome[List[CachedProcessSummary]]]] =
       (mockViewerConnector
-        .listActive()(_: ExecutionContext, _: HeaderCarrier))
+        .listActive()(using _: ExecutionContext, _: HeaderCarrier))
         .expects(*, *)
 
     def get(id: String, version: Long, timescalesVersion: Option[Long], ratesVersion: Option[Long]): CallHandler[Future[RequestOutcome[JsValue]]] = {
       (mockViewerConnector
-        .get(_: String, _: Long, _: Option[Long], _: Option[Long])(_: ExecutionContext, _: HeaderCarrier))
+        .get(_: String, _: Long, _: Option[Long], _: Option[Long])(using _: ExecutionContext, _: HeaderCarrier))
         .expects(id, version, timescalesVersion, ratesVersion, *, *)
     }
 

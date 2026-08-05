@@ -33,7 +33,7 @@ class ProcessAdminServiceSpec extends BaseSpec {
 
   private trait Test extends MockPublishedConnector with MockArchiveConnector with MockApprovalConnector with MockViewerConnector {
 
-    implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
+    given headerCarrier: HeaderCarrier = HeaderCarrier()
 
     lazy val service: ProcessAdminService = new ProcessAdminService(mockPublishedConnector, mockApprovalConnector, mockArchiveConnector, mockViewerConnector)
     val now = ZonedDateTime.now
@@ -153,7 +153,7 @@ class ProcessAdminServiceSpec extends BaseSpec {
       service.getArchivedById(processId).onComplete {
         case Success(response) =>
           response match {
-            case Right(response) =>
+            case Right(_) =>
             case Left(error) => fail(s"Unexpected error returned by approvalProcess connector : ${error.toString}")
           }
         case Failure(exception) => fail(s"Future onComplete returned unexpected error : ${exception.getMessage}")
@@ -169,7 +169,7 @@ class ProcessAdminServiceSpec extends BaseSpec {
       service.getActive(processId, processVersion, None, None).onComplete {
         case Success(response) =>
           response match {
-            case Right(response) =>
+            case Right(_) =>
             case Left(error) => fail(s"Unexpected error returned by viewer connector : ${error.toString}")
           }
         case Failure(exception) => fail(s"Future onComplete returned unexpected error : ${exception.getMessage}")

@@ -23,7 +23,7 @@ import models.YesNoAnswer
 import models.forms.TwoEyePageReview
 
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 
 class TwoEyePageReviewFormProvider @Inject() extends Mappings with Constraints {
 
@@ -31,7 +31,7 @@ class TwoEyePageReviewFormProvider @Inject() extends Mappings with Constraints {
     Form(
       mapping(
         "answer" -> enumerable[YesNoAnswer]("2iPageReview.answer.error.required")
-      )(TwoEyePageReview.apply)(TwoEyePageReview.unapply)
+      )(TwoEyePageReview.apply)(tepr => Some(tepr.answer))
     )
   }
 }

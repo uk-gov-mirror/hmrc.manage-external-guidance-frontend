@@ -25,5 +25,5 @@ object YesNoAnswer extends Enumerable.Implicits {
 
   val values: Seq[YesNoAnswer] = Seq(Yes, No)
 
-  implicit val enumerable: Enumerable[YesNoAnswer] = Enumerable(values.map(v => v.toString -> v): _*)
+  given enumerable: Enumerable[YesNoAnswer] = Enumerable(values.map(v => v.toString -> v): _*)
 }

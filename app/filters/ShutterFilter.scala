@@ -23,19 +23,19 @@ import com.google.inject.Inject
 import javax.inject.Singleton
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.Results.ServiceUnavailable
-import play.api.mvc._
+import play.api.mvc.*
 import play.api.{Configuration, Logger}
 
 import scala.concurrent.Future
 
 @Singleton
-class ShutterFilter @Inject() (configuration: Configuration, val messagesApi: MessagesApi, view: views.html.service_unavailable)(implicit val mat: Materializer)
+class ShutterFilter @Inject() (configuration: Configuration, val messagesApi: MessagesApi, view: views.html.service_unavailable)(using val mat: Materializer)
     extends Filter
     with I18nSupport {
 
   override def apply(next: RequestHeader => Future[Result])(rh: RequestHeader): Future[Result] = {
 
-    implicit val request: Request[_] = Request(rh, "")
+    given request: Request[_] = Request(rh, "")
 
     val logger = Logger(getClass)
     val shuttered: Boolean = configuration.get[Boolean]("shuttered")

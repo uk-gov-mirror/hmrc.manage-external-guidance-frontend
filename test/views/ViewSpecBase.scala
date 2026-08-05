@@ -18,7 +18,7 @@ package views
 
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 import play.api.inject.Injector
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.AnyContentAsEmpty
@@ -35,11 +35,11 @@ trait ViewSpecBase extends BaseSpec with GuiceOneAppPerSuite {
 
   def messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
 
-  implicit val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("", "")
+  given fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("", "")
 
-  implicit val messages: Messages = messagesApi.preferred(fakeRequest)
+  given messages: Messages = messagesApi.preferred(fakeRequest)
 
-  implicit val appConfig: AppConfig = injector.instanceOf[AppConfig]
+  given appConfig: AppConfig = injector.instanceOf[AppConfig]
 
   def titleSuffix(): String = s" - ${messages("service.name")} - ${messages("service.govuk")}"
 

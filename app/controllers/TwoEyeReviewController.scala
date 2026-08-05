@@ -21,11 +21,11 @@ import controllers.actions.TwoEyeReviewerAction
 import models.errors.{DuplicateKeyError, MalformedResponseError, NotFoundError, StaleDataError, IncompleteDataError}
 import play.api.Logger
 import play.api.i18n.I18nSupport
-import play.api.mvc._
+import play.api.mvc.*
 import services.{AuditService, ReviewService}
 import uk.gov.hmrc.play.bootstrap.controller.WithUnsafeDefaultFormBinding
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html._
+import views.html.*
 import models.ApprovalStatus
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
@@ -47,9 +47,10 @@ class TwoEyeReviewController @Inject() (
     with I18nSupport {
 
   val logger: Logger = Logger(getClass)
-  implicit val ec: ExecutionContext = mcc.executionContext
+  given ec: ExecutionContext = mcc.executionContext
 
-  def approval(id: String): Action[AnyContent] = twoEyeReviewerAction.async { implicit request =>
+  def approval(id: String): Action[AnyContent] = twoEyeReviewerAction.async { request =>
+    given Request[AnyContent] = request
     reviewService.approval2iReview(id).flatMap {
       case Right(approvalProcessReview) =>
         Future.successful(Ok(view(approvalProcessReview)))
@@ -73,7 +74,8 @@ class TwoEyeReviewController @Inject() (
 
   }
 
-  def onSubmit(processId: String): Action[AnyContent] = twoEyeReviewerAction.async { implicit request =>
+  def onSubmit(processId: String): Action[AnyContent] = twoEyeReviewerAction.async { request =>
+    given Request[AnyContent] = request
     reviewService.approval2iReviewCheck(processId) flatMap {
       case Right(()) =>
           reviewService.approval2iReviewComplete(processId, request.credId, request.name, ApprovalStatus.Published).flatMap {

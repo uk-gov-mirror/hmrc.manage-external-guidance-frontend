@@ -24,7 +24,7 @@ import models.forms.UnpublishConfirmation
 import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.I18nSupport
-import play.api.mvc._
+import play.api.mvc.*
 import services.AdminService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.{unpublish_confirmation, unpublished}
@@ -45,9 +45,10 @@ class ArchiveController @Inject()(
     with I18nSupport {
 
   val logger: Logger = Logger(getClass)
-  implicit val ec: ExecutionContext = mcc.executionContext
+  given ec: ExecutionContext = mcc.executionContext
 
-  def unpublish(processId: String): Action[AnyContent] = allRolesAction.async { implicit request =>
+  def unpublish(processId: String): Action[AnyContent] = allRolesAction.async { request =>
+    given Request[AnyContent] = request
     val form: Form[UnpublishConfirmation] = formProvider().bind(Map("value" -> No.toString))
 
     adminService.getPublished(processId).flatMap {
@@ -56,7 +57,8 @@ class ArchiveController @Inject()(
     }
   }
 
-  def archive(processId: String, processName: String): Action[AnyContent] = allRolesAction.async { implicit request =>
+  def archive(processId: String, processName: String): Action[AnyContent] = allRolesAction.async { request =>
+    given Request[AnyContent] = request
     formProvider()
       .bindFromRequest()
       .fold(

@@ -45,12 +45,12 @@ class AllRolesAuthenticatedActionSpec extends ControllerBaseSpec with MockAuthCo
     val path: String = "/path"
     val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", path)
 
-    implicit val hc: HeaderCarrier = HeaderCarrier()
-    implicit val ec: ExecutionContext = app.injector.instanceOf[ExecutionContext]
+    given hc: HeaderCarrier = HeaderCarrier()
+    given ec: ExecutionContext = app.injector.instanceOf[ExecutionContext]
 
     lazy val mockErrorHandler: ErrorHandler = mock[ErrorHandler]
     (mockErrorHandler
-      .standardErrorTemplate(_: String, _: String, _: String)(_: Request[_]))
+      .standardErrorTemplate(_: String, _: String, _: String)(using _: Request[_]))
       .stubs(*, *, *, *)
       .returns(Future.successful(Html("")))
 

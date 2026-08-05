@@ -32,12 +32,12 @@ trait MockRatesService extends TestSuite with MockFactory {
   object MockRatesService {
     def submitRates(rates: JsValue): CallHandler[Future[RequestOutcome[LabelledDataUpdateStatus]]] =
       (mockRatesService
-        .submitRates(_: JsValue)(_: ExecutionContext, _: HeaderCarrier))
+        .submitRates(_: JsValue)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(rates, *, *)
 
     def details(): CallHandler[Future[RequestOutcome[LabelledDataUpdateStatus]]] =
       (mockRatesService
-        .details()(_: ExecutionContext, _: HeaderCarrier))
+        .details()(using _: ExecutionContext, _: HeaderCarrier))
         .expects(*, *)
   }
 }

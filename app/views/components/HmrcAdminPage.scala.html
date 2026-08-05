@@ -33,8 +33,8 @@
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcInternalHead
 @import uk.gov.hmrc.hmrcfrontend.views.html.components.HmrcInternalHeader
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.internalheader.InternalHeader
-@import uk.gov.hmrc.govukfrontend.views.html.components.implicits._
-@import uk.gov.hmrc.hmrcfrontend.views.html.components.implicits._
+@import uk.gov.hmrc.govukfrontend.views.html.components.implicits.*
+@import uk.gov.hmrc.hmrcfrontend.views.html.components.implicits.*
 
 @this(
   govukLayout: GovukLayout,
@@ -50,7 +50,7 @@
 )
 
 @(params: HmrcStandardPageParams, homepageUrl: Option[String])(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
-@import params._
+@import params.*
 
 @beforeContent = {
   @if(isWelshTranslationAvailable) {

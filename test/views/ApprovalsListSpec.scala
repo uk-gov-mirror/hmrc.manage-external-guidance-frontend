@@ -42,7 +42,7 @@ class ApprovalsListSpec extends ViewSpecBase {
       ApprovalProcessSummary("oct9008", "Find a lost user ID and password", LocalDate.of(2020, 4, 2), Submitted, ReviewTypeFactCheck, 1)
     )
 
-    implicit val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/")
+    given fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/")
 
     val doc: Document = asDocument(approvalsListView(summaries)(fakeRequest, messages))
   }

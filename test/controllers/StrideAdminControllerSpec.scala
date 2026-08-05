@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions.FakeDesignerAction
-import mocks.{MockAppConfig, MockProcessAdminService}
+import mocks.MockProcessAdminService
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -38,20 +38,17 @@ class StrideAdminControllerSpec extends AnyWordSpec with Matchers with GuiceOneA
     private val apview = app.injector.instanceOf[approval_summaries]
     private val aview = app.injector.instanceOf[archived_summaries]
     private val activeView = app.injector.instanceOf[active_summaries]
-    private val siview = app.injector.instanceOf[admin_signin]
     
     lazy val errorHandler = app.injector.instanceOf[config.ErrorHandler]
-    implicit val hc: HeaderCarrier = HeaderCarrier()
+    given hc: HeaderCarrier = HeaderCarrier()
     val fakeRequest = FakeRequest("GET", "/")
     val controller = new StrideAdminController(
-                            MockAppConfig,
                             FakeDesignerAction,
                             errorHandler,
                             pview,
                             aview,
                             apview,
-                            activeView, 
-                            siview,
+                            activeView,
                             mockProcessAdminService,
                             stubMessagesControllerComponents())
 

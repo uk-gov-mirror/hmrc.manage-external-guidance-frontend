@@ -35,7 +35,7 @@ class AdminControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPerS
 
     private val view = app.injector.instanceOf[approval_summary_list]
     lazy val errorHandler = app.injector.instanceOf[config.ErrorHandler]
-    implicit val hc: HeaderCarrier = HeaderCarrier()
+    given hc: HeaderCarrier = HeaderCarrier()
     val fakeRequest = FakeRequest("GET", "/")
     val controller = new AdminController(FakeAllRolesAction, errorHandler, view, mockApprovalService, stubMessagesControllerComponents())
 

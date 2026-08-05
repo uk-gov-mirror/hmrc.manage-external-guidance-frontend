@@ -22,7 +22,7 @@ import play.api.data.Forms.of
 
 trait Mappings extends Formatters {
 
-  protected def enumerable[A](requiredKey: String = "error.required", invalidKey: String = "error.invalid")(implicit ev: Enumerable[A]): FieldMapping[A] =
+  protected def enumerable[A](requiredKey: String = "error.required", invalidKey: String = "error.invalid")(using ev: Enumerable[A]): FieldMapping[A] =
     of(enumerableFormatter[A](requiredKey, invalidKey))
 
 }

@@ -28,7 +28,7 @@ import uk.gov.hmrc.http.StringContextOps
 @Singleton
 class PublishedConnector @Inject() (httpClient: HttpClientV2, appConfig: AppConfig) {
 
-  def summaries(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[List[ProcessSummary]]] = {
+  def summaries(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[List[ProcessSummary]]] = {
     import connectors.httpParsers.PublishedProcessHttpParser.processSummaryHttpReads
 
     val summaryEndPoint: String = appConfig.externalGuidanceBaseUrl + "/external-guidance/published"
@@ -36,7 +36,7 @@ class PublishedConnector @Inject() (httpClient: HttpClientV2, appConfig: AppConf
     httpClient.get(url"$summaryEndPoint").execute[RequestOutcome[List[ProcessSummary]]]
   }
 
-  def getPublished(id: String)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[PublishedProcess]] = {
+  def getPublished(id: String)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[PublishedProcess]] = {
     val publishedEndPoint: String = appConfig.externalGuidanceBaseUrl + s"/external-guidance/published-process/$id"
 
     import connectors.httpParsers.PublishedProcessHttpParser.publishedProcessHttpReads
@@ -44,7 +44,7 @@ class PublishedConnector @Inject() (httpClient: HttpClientV2, appConfig: AppConf
     httpClient.get(url"$publishedEndPoint").execute[RequestOutcome[PublishedProcess]]
   }
 
-  def getPublishedByProcessCode(code: String)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] = {
+  def getPublishedByProcessCode(code: String)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] = {
     val publishedEndPoint: String = appConfig.externalGuidanceBaseUrl + s"/external-guidance/published/$code"
 
     import connectors.httpParsers.PublishedProcessHttpParser.processHttpReads

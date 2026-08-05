@@ -19,14 +19,14 @@ package connectors.httpParsers
 import models.errors.{InternalServerError, InvalidProcessError}
 import models.{ApprovalProcessSummary, ApprovalResponse, RequestOutcome}
 import play.api.Logger
-import play.api.http.Status._
+import play.api.http.Status.*
 import uk.gov.hmrc.http.HttpReads
 
 object ApprovalHttpParser extends HttpParser {
 
   val logger: Logger = Logger(getClass)
 
-  implicit val saveApprovalHttpReads: HttpReads[RequestOutcome[ApprovalResponse]] = {
+  given saveApprovalHttpReads: HttpReads[RequestOutcome[ApprovalResponse]] = {
     case (_, _, response) if response.status == CREATED =>
       response.validateJson[ApprovalResponse] match {
         case Some(result) => Right(result)
@@ -38,7 +38,7 @@ object ApprovalHttpParser extends HttpParser {
     case (_, _, response) => Left(response.checkErrorResponse)
   }
 
-  implicit val getApprovalSummaryListHttpReads: HttpReads[RequestOutcome[List[ApprovalProcessSummary]]] = {
+  given getApprovalSummaryListHttpReads: HttpReads[RequestOutcome[List[ApprovalProcessSummary]]] = {
     case (_, _, response) if response.status == OK =>
       response.validateJson[List[ApprovalProcessSummary]] match {
         case Some(result) => Right(result)

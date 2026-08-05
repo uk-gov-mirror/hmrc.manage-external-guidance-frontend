@@ -19,7 +19,7 @@ package controllers.apis
 import config.AppConfig
 import models.errors.{Error, InvalidProcessError}
 import play.api.libs.json.{JsValue, Json}
-import play.api.mvc._
+import play.api.mvc.*
 import services.ScratchService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
@@ -29,8 +29,8 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class ScratchController @Inject() (appConfig: AppConfig, scratchService: ScratchService, mcc: MessagesControllerComponents) extends FrontendController(mcc) {
 
-  implicit val config: AppConfig = appConfig
-  implicit val ec: ExecutionContext = mcc.executionContext
+  given config: AppConfig = appConfig
+  given ec: ExecutionContext = mcc.executionContext
 
   val corsHeaders: Seq[(String, String)] = Seq(
     "Access-Control-Allow-Origin" -> "*",
@@ -39,7 +39,8 @@ class ScratchController @Inject() (appConfig: AppConfig, scratchService: Scratch
     "Access-Control-Expose-Headers" -> "Location"
   )
 
-  def submitScratchProcess(): Action[JsValue] = Action.async(parse.json) { implicit request: Request[JsValue] =>
+  def submitScratchProcess: Action[JsValue] = Action.async(parse.json) { request =>
+    given Request[JsValue] = request
     scratchService.submitScratchProcess(request.body).map {
       case Right(submissionResponse) =>
         val location: String = s"/review-guidance/scratch/${submissionResponse.id}"

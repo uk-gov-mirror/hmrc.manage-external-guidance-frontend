@@ -23,7 +23,7 @@ import models.ApprovalProcessReview
 import org.jsoup.nodes.Document
 import play.api.data.FormError
 import play.api.test.FakeRequest
-import views.html._
+import views.html.*
 
 class PageTitleSpec extends ViewSpecBase {
 

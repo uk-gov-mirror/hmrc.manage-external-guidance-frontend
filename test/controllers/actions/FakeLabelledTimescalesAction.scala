@@ -24,7 +24,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 object FakeLabelledDataAction extends ControllerBaseSpec with TimescalesAction with RatesAction {
 
-  override implicit protected def executionContext: ExecutionContext = ExecutionContext.global
+  override given executionContext: ExecutionContext = ExecutionContext.global
 
   override def parser: BodyParser[AnyContent] = messagesControllerComponents.parsers.defaultBodyParser
 

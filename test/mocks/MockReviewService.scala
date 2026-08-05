@@ -34,12 +34,12 @@ trait MockReviewService extends TestSuite with MockFactory {
 
     def approval2iReview(id: String): CallHandler[Future[RequestOutcome[ApprovalProcessReview]]] =
       (mockReviewService
-        .approval2iReview(_: String)(_: ExecutionContext, _: HeaderCarrier))
+        .approval2iReview(_: String)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(id, *, *)
 
     def approval2iReviewCheck(id: String): CallHandler[Future[RequestOutcome[Unit]]] =
       (mockReviewService
-        .approval2iReviewCheck(_: String)(_: ExecutionContext, _: HeaderCarrier))
+        .approval2iReviewCheck(_: String)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(id, *, *)
 
     def approval2iReviewComplete(id: String,
@@ -47,17 +47,17 @@ trait MockReviewService extends TestSuite with MockFactory {
                                  userName: String,
                                  status: ApprovalStatus): CallHandler[Future[RequestOutcome[AuditInfo]]] =
       (mockReviewService
-        .approval2iReviewComplete(_: String, _: String, _: String, _: ApprovalStatus)(_: ExecutionContext, _: HeaderCarrier))
+        .approval2iReviewComplete(_: String, _: String, _: String, _: ApprovalStatus)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(id, userPid, userName, status, *, *)
 
     def approval2iPageReview(id: String, pageUrl: String): CallHandler[Future[RequestOutcome[PageReviewDetail]]] =
       (mockReviewService
-        .approval2iPageReview(_: String, _: String)(_: ExecutionContext, _: HeaderCarrier))
+        .approval2iPageReview(_: String, _: String)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(id, pageUrl, *, *)
 
     def approval2iPageReviewComplete(id: String, pageUrl: String, pageReviewDetail: PageReviewDetail): CallHandler[Future[RequestOutcome[Unit]]] =
       (mockReviewService
-        .approval2iPageReviewComplete(_: String, _: String, _: PageReviewDetail)(_: ExecutionContext, _: HeaderCarrier))
+        .approval2iPageReviewComplete(_: String, _: String, _: PageReviewDetail)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(
           where { (i: String, u: String, p: PageReviewDetail, _: ExecutionContext, _: HeaderCarrier) =>
             i == id &&
@@ -72,7 +72,7 @@ trait MockReviewService extends TestSuite with MockFactory {
 
     def approvalFactCheck(id: String): CallHandler[Future[RequestOutcome[ApprovalProcessReview]]] =
       (mockReviewService
-        .approvalFactCheck(_: String)(_: ExecutionContext, _: HeaderCarrier))
+        .approvalFactCheck(_: String)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(id, *, *)
 
     def approvalFactCheckComplete(id: String,
@@ -80,17 +80,17 @@ trait MockReviewService extends TestSuite with MockFactory {
                                   userName: String,
                                   status: ApprovalStatus): CallHandler[Future[RequestOutcome[AuditInfo]]] =
       (mockReviewService
-        .approvalFactCheckComplete(_: String, _: String, _:String, _: ApprovalStatus)(_: ExecutionContext, _: HeaderCarrier))
+        .approvalFactCheckComplete(_: String, _: String, _:String, _: ApprovalStatus)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(id, userId, userName, status, *, *)
 
     def factCheckPageInfo(id: String, pageUrl: String): CallHandler[Future[RequestOutcome[PageReviewDetail]]] =
       (mockReviewService
-        .factCheckPageInfo(_: String, _: String)(_: ExecutionContext, _: HeaderCarrier))
+        .factCheckPageInfo(_: String, _: String)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(id, pageUrl, *, *)
 
     def factCheckPageComplete(id: String, pageUrl: String, pageReviewDetail: PageReviewDetail): CallHandler[Future[RequestOutcome[Unit]]] =
       (mockReviewService
-        .factCheckPageComplete(_: String, _: String, _: PageReviewDetail)(_: ExecutionContext, _: HeaderCarrier))
+        .factCheckPageComplete(_: String, _: String, _: PageReviewDetail)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(
           where { (i: String, u: String, p: PageReviewDetail, _: ExecutionContext, _: HeaderCarrier) =>
             i == id &&

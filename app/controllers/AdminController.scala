@@ -20,7 +20,7 @@ import config.ErrorHandler
 import controllers.actions.AllRolesAction
 import play.api.Logger
 import play.api.i18n.I18nSupport
-import play.api.mvc._
+import play.api.mvc.*
 import services.ApprovalService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.approval_summary_list
@@ -38,11 +38,12 @@ class AdminController @Inject() (
     mcc: MessagesControllerComponents
 ) extends FrontendController(mcc)
     with I18nSupport {
-  implicit val localDateOrdering: Ordering[LocalDate] = Ordering.by(_.toEpochDay)
+  given localDateOrdering: Ordering[LocalDate] = Ordering.by(_.toEpochDay)
   val logger = Logger(getClass)
-  implicit val ec: ExecutionContext = mcc.executionContext
+  given ec: ExecutionContext = mcc.executionContext
 
-  def approvalSummaries: Action[AnyContent] = identify.async { implicit request =>
+  def approvalSummaries: Action[AnyContent] = identify.async { request =>
+    given Request[AnyContent] = request
     approvalService.approvalSummaries.flatMap {
       case Right(processList) => Future.successful(Ok(view(processList.sortBy(_.lastUpdated).reverse)))
       case Left(err) =>

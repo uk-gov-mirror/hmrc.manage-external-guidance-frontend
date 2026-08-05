@@ -21,28 +21,28 @@ import play.api.Configuration
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 trait AppConfig {
-  val appName: String
-  val reportAProblemPartialUrl: String
-  val reportAProblemNonJSUrl: String
-  val externalGuidanceBaseUrl: String
-  val loginUrl: String
-  val continueUrl: String
-  val timescalesContinueUrl: String
-  val ratesContinueUrl: String
-  val processAdminContinueUrl: String
-  val designerAdminContinueUrl: String
-  val designerRole: String
-  val twoEyeReviewerRole: String
-  val factCheckerRole: String
-  val viewApprovalUrl: String
-  val pageMapApprovalUrl: String
-  val pageMapPublishedlUrl: String
-  val activeProcessesUrl: String
-  val commentsAndFeedbackUrl: String
-  val processAdminUser: String
-  val processAdminPassword: String
-  val debugApprovalUrl: String 
-  val debugPublishedUrl: String  
+  lazy val appName: String
+  lazy val reportAProblemPartialUrl: String
+  lazy val reportAProblemNonJSUrl: String
+  lazy val externalGuidanceBaseUrl: String
+  lazy val loginUrl: String
+  lazy val continueUrl: String
+  lazy val timescalesContinueUrl: String
+  lazy val ratesContinueUrl: String
+  lazy val processAdminContinueUrl: String
+  lazy val designerAdminContinueUrl: String
+  lazy val designerRole: String
+  lazy val twoEyeReviewerRole: String
+  lazy val factCheckerRole: String
+  lazy val viewApprovalUrl: String
+  lazy val pageMapApprovalUrl: String
+  lazy val pageMapPublishedlUrl: String
+  lazy val activeProcessesUrl: String
+  lazy val commentsAndFeedbackUrl: String
+  lazy val processAdminUser: String
+  lazy val processAdminPassword: String
+  lazy val debugApprovalUrl: String
+  lazy val debugPublishedUrl: String
 }
 
 @Singleton
@@ -55,11 +55,11 @@ class AppConfigImpl @Inject() (config: Configuration, servicesConfig: ServicesCo
   private lazy val egViewerApiHost: String = config.get[String]("external-guidance-viewer.api-host")
   private lazy val egAdminBaseUrl: String = config.get[String]("external-guidance-viewer.adminBaseUrl")
 
-  val reportAProblemPartialUrl: String = s"$contactBaseUrl/contact/problem_reports_ajax?service=$serviceIdentifier"
-  val reportAProblemNonJSUrl: String = s"""$contactBaseUrl${servicesConfig.getString("contact-frontend-urls.reportAProblemNonJSUrl")}"""
+  lazy val reportAProblemPartialUrl: String = s"$contactBaseUrl/contact/problem_reports_ajax?service=$serviceIdentifier"
+  lazy val reportAProblemNonJSUrl: String = s"""$contactBaseUrl${servicesConfig.getString("contact-frontend-urls.reportAProblemNonJSUrl")}"""
   lazy val externalGuidanceBaseUrl: String = servicesConfig.baseUrl("external-guidance")
-  val appName: String = config.get[String]("appName")
-  val commentsAndFeedbackUrl = config.get[String]("appLinks.commentsAndFeedbackUrl")
+  lazy val appName: String = config.get[String]("appName")
+  lazy val commentsAndFeedbackUrl: String = config.get[String]("appLinks.commentsAndFeedbackUrl")
   lazy val loginUrl: String = servicesConfig.getString("strideAuth.login.url")
   lazy val continueUrl: String = host + servicesConfig.getString("strideAuth.login.continueUrl")
   lazy val timescalesContinueUrl: String = host + servicesConfig.getString("strideAuth.login.timescalesContinueUrl")

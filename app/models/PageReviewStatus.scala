@@ -25,5 +25,5 @@ object PageReviewStatus extends Enumerable.Implicits {
 
   val values: Seq[PageReviewStatus] = Seq(NotStarted, Complete)
 
-  implicit val enumerable: Enumerable[PageReviewStatus] = Enumerable(values.map(v => v.toString -> v): _*)
+  given enumerable: Enumerable[PageReviewStatus] = Enumerable(values.map(v => v.toString -> v): _*)
 }

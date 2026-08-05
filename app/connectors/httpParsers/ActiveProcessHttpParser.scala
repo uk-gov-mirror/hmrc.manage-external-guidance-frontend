@@ -20,7 +20,7 @@ import models.errors.{BadRequestError, NotFoundError, InternalServerError}
 import models.admin.CachedProcessSummary
 import models.RequestOutcome
 import play.api.Logger
-import play.api.http.Status._
+import play.api.http.Status.*
 import uk.gov.hmrc.http.HttpReads
 import play.api.libs.json.JsValue
 
@@ -28,7 +28,7 @@ object ActiveProcessHttpParser extends HttpParser {
 
   val logger: Logger = Logger(getClass)
 
-  implicit val processHttpReads: HttpReads[RequestOutcome[JsValue]] = {
+  given processHttpReads: HttpReads[RequestOutcome[JsValue]] = {
     case (_, _, response) if response.status == OK =>
       response.validateJson[JsValue] match {
         case Some(result) => Right(result)
@@ -41,7 +41,7 @@ object ActiveProcessHttpParser extends HttpParser {
     case (_, _, response) => Left(response.checkErrorResponse)
   }
 
-  implicit val summaryHttpReads: HttpReads[RequestOutcome[List[CachedProcessSummary]]] = {
+  given summaryHttpReads: HttpReads[RequestOutcome[List[CachedProcessSummary]]] = {
     case (_, _, response) if response.status == OK =>
       response.validateJson[List[CachedProcessSummary]] match {
         case Some(result) => Right(result)

@@ -23,5 +23,5 @@ import play.api.libs.json.{Json, OFormat}
 case class ApprovalProcessReview(id: String, ocelotId: String, title: String, lastUpdated: LocalDate, pages: List[PageReview])
 
 object ApprovalProcessReview {
-  implicit val formats: OFormat[ApprovalProcessReview] = Json.format[ApprovalProcessReview]
+  given formats: OFormat[ApprovalProcessReview] = Json.format[ApprovalProcessReview]
 }

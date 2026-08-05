@@ -30,19 +30,19 @@ class AdminService @Inject()(connector: ApprovalConnector, published: PublishedC
 
   val logger = Logger(getClass)
 
-  def approvalSummaries(implicit context: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[List[ApprovalProcessSummary]]] =
+  def approvalSummaries(using context: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[List[ApprovalProcessSummary]]] =
     connector.approvalSummaries
 
-  def submitFor2iReview(process: JsValue)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[ApprovalResponse]] =
+  def submitFor2iReview(process: JsValue)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[ApprovalResponse]] =
     connector.submitFor2iReview(process)
 
-  def getPublished(id: String)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[PublishedProcess]] =
+  def getPublished(id: String)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[PublishedProcess]] =
     published.getPublished(id)
 
-  def submitForFactCheck(process: JsValue)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[ApprovalResponse]] =
+  def submitForFactCheck(process: JsValue)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[ApprovalResponse]] =
     connector.submitForFactCheck(process)
 
-  def archive(processId: String)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[Boolean]] =
+  def archive(processId: String)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[Boolean]] =
     archive.archive(processId)
 
 }

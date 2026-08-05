@@ -20,13 +20,13 @@ import config.ErrorHandler
 import controllers.actions.TwoEyeReviewerAction
 import forms.TwoEyePageReviewFormProvider
 import models.PageReviewDetail
-import models.PageReviewStatus._
+import models.PageReviewStatus.*
 import models.errors.{NotFoundError, StaleDataError}
 import models.forms.TwoEyePageReview
 import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.I18nSupport
-import play.api.mvc._
+import play.api.mvc.*
 import services.ReviewService
 import uk.gov.hmrc.play.bootstrap.controller.WithUnsafeDefaultFormBinding
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -48,9 +48,10 @@ class TwoEyePageReviewController @Inject() (
     with I18nSupport {
 
   val logger: Logger = Logger(getClass)
-  implicit val ec: ExecutionContext = mcc.executionContext
+  given ec: ExecutionContext = mcc.executionContext
 
-  def onPageLoad(processId: String, pageUrl: String, index: Int): Action[AnyContent] = twoEyeReviewerAction.async { implicit request =>
+  def onPageLoad(processId: String, pageUrl: String, index: Int): Action[AnyContent] = twoEyeReviewerAction.async { request =>
+    given Request[AnyContent] = request
     reviewService.approval2iPageReview(processId, s"/$pageUrl").flatMap {
       case Right(pageReviewDetail) =>
         val form: Form[TwoEyePageReview] = pageReviewDetail.result.fold(formProvider()) { answer =>
@@ -68,7 +69,8 @@ class TwoEyePageReviewController @Inject() (
   def onSubmit(processId: String,
                pageUrl: String,
                pageTitle: String,
-               index: Int): Action[AnyContent] = twoEyeReviewerAction.async { implicit request =>
+               index: Int): Action[AnyContent] = twoEyeReviewerAction.async { request =>
+    given Request[AnyContent] = request
     formProvider()
       .bindFromRequest()
       .fold(

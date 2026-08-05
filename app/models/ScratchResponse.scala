@@ -22,5 +22,5 @@ case class ScratchResponse(id: String)
 
 object ScratchResponse {
 
-  implicit val formats: OFormat[ScratchResponse] = Json.format[ScratchResponse]
+  given formats: OFormat[ScratchResponse] = Json.format[ScratchResponse]
 }

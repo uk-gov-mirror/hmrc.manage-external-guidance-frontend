@@ -43,15 +43,15 @@ import models.errors.ForbiddenError
 class TimescaleControllerSpec extends ControllerBaseSpec with GuiceOneAppPerSuite with MockTimescalesService {
 
   private trait Test {
-    implicit val hc: HeaderCarrier = HeaderCarrier()
+    given hc: HeaderCarrier = HeaderCarrier()
     val errorHandler: ErrorHandler = injector.instanceOf[ErrorHandler]
     def messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
-    implicit val messages: Messages = messagesApi.preferred(FakeRequest("GET", "/"))
+    given messages: Messages = messagesApi.preferred(FakeRequest("GET", "/"))
     val view: upload_timescales = injector.instanceOf[upload_timescales]
     val completeView: labelleddata_upload_complete = injector.instanceOf[labelleddata_upload_complete]
     val timscalesJsonString = """{"First": 1, "Second": 2, "Third": 3}"""
     val timescalesJson: JsValue = Json.parse(timscalesJsonString)
-    val controller = new TimescalesController(mockTimescalesService, FakeLabelledDataAction, errorHandler, view, completeView, messagesControllerComponents)
+    val controller = new TimescalesController(mockTimescalesService, FakeLabelledDataAction, view, completeView, messagesControllerComponents)
 
     val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/external-guidance/timescales")
     val lastUpdateTime: ZonedDateTime = ZonedDateTime.of(2020, 1, 1, 12, 0, 1, 0, ZonedDateTime.now.getZone)

@@ -18,7 +18,8 @@ package endpoints
 
 import models.errors.{Error, InternalServerError, InvalidProcessError}
 import play.api.http.Status
-import play.api.libs.json._
+import play.api.libs.json.*
+import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 import play.api.libs.ws.WSResponse
 import stubs.{AuditStub, AuthStub, ExternalGuidanceStub}
 import support.IntegrationSpec

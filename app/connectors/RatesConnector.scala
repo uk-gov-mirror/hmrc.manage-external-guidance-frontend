@@ -20,6 +20,7 @@ import javax.inject.{Inject, Singleton}
 import models.LabelledDataUpdateStatus
 import scala.concurrent.{ExecutionContext, Future}
 import play.api.libs.json.{Json, JsValue}
+import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.HttpClientV2
 import config.AppConfig
@@ -30,19 +31,19 @@ import uk.gov.hmrc.http.StringContextOps
 class RatesConnector @Inject() (httpClient: HttpClientV2, appConfig: AppConfig) {
   import connectors.httpParsers.LabelledDataHttpParser.labelledDataHttpReads
 
-  def details()(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[LabelledDataUpdateStatus]] = {
+  def details()(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[LabelledDataUpdateStatus]] = {
     val endPoint: String = appConfig.externalGuidanceBaseUrl + "/external-guidance/rates"
 
     httpClient.get(url"$endPoint").execute[RequestOutcome[LabelledDataUpdateStatus]]
   }
 
-  def submitRates(rates: JsValue)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[LabelledDataUpdateStatus]] = {
+  def submitRates(rates: JsValue)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[LabelledDataUpdateStatus]] = {
     val endpoint: String = appConfig.externalGuidanceBaseUrl + "/external-guidance/rates"
 
     httpClient.post(url"$endpoint").withBody(Json.toJson(rates)).execute[RequestOutcome[LabelledDataUpdateStatus]]
   }
 
-  def get()(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] = {
+  def get()(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] = {
     val endPoint: String = appConfig.externalGuidanceBaseUrl + "/external-guidance/rates/data"
     import connectors.httpParsers.PublishedProcessHttpParser.processHttpReads
 

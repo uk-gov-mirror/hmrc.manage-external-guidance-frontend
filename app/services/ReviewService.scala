@@ -18,7 +18,7 @@ package services
 
 import connectors.ReviewConnector
 import javax.inject.{Inject, Singleton}
-import models._
+import models.*
 import models.audit.AuditInfo
 import uk.gov.hmrc.http.HeaderCarrier
 
@@ -27,44 +27,44 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class ReviewService @Inject() (reviewConnector: ReviewConnector) {
 
-  def approval2iReview(id: String)(implicit ex: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[ApprovalProcessReview]] =
+  def approval2iReview(id: String)(using ex: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[ApprovalProcessReview]] =
     reviewConnector.approval2iReview(id)
 
-  def approval2iReviewCheck(id: String)(implicit ex: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[Unit]] =
+  def approval2iReviewCheck(id: String)(using ex: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[Unit]] =
     reviewConnector.approval2iReviewConfirmCheck(id)
 
   def approval2iReviewComplete(id: String, userPid: String, userName: String, status: ApprovalStatus)(
-      implicit ex: ExecutionContext,
+      using ex: ExecutionContext,
       hc: HeaderCarrier
   ): Future[RequestOutcome[AuditInfo]] =
     reviewConnector.approval2iReviewComplete(id, ApprovalProcessStatusChange(userPid, userName, status))
 
-  def approval2iPageReview(id: String, pageUrl: String)(implicit ex: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[PageReviewDetail]] =
+  def approval2iPageReview(id: String, pageUrl: String)(using ex: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[PageReviewDetail]] =
     reviewConnector.approval2iReviewPageInfo(id, pageUrl)
 
   def approval2iPageReviewComplete(id: String, pageUrl: String, pageReviewDetail: PageReviewDetail)(
-      implicit ex: ExecutionContext,
+      using ex: ExecutionContext,
       hc: HeaderCarrier
   ): Future[RequestOutcome[Unit]] =
     reviewConnector.approval2iReviewPageComplete(id, pageUrl, pageReviewDetail)
 
   def approvalFactCheck(id: String)(
-      implicit ex: ExecutionContext,
+      using ex: ExecutionContext,
       hc: HeaderCarrier
   ): Future[RequestOutcome[ApprovalProcessReview]] =
     reviewConnector.approvalFactCheck(id)
 
   def approvalFactCheckComplete(id: String, userPid: String, userName: String, status: ApprovalStatus)(
-      implicit ex: ExecutionContext,
+      using ex: ExecutionContext,
       hc: HeaderCarrier
   ): Future[RequestOutcome[AuditInfo]] =
     reviewConnector.approvalFactCheckComplete(id, ApprovalProcessStatusChange(userPid, userName, status))
 
-  def factCheckPageInfo(id: String, pageUrl: String)(implicit ex: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[PageReviewDetail]] =
+  def factCheckPageInfo(id: String, pageUrl: String)(using ex: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[PageReviewDetail]] =
     reviewConnector.factCheckPageInfo(id, pageUrl)
 
   def factCheckPageComplete(id: String, pageUrl: String, pageReviewDetail: PageReviewDetail)(
-      implicit ex: ExecutionContext,
+      using ex: ExecutionContext,
       hc: HeaderCarrier
   ): Future[RequestOutcome[Unit]] =
     reviewConnector.factCheckPageComplete(id, pageUrl, pageReviewDetail)

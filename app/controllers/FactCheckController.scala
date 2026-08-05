@@ -21,7 +21,7 @@ import controllers.actions.FactCheckerAction
 import models.errors.{DuplicateKeyError, MalformedResponseError, NotFoundError, StaleDataError}
 import play.api.Logger
 import play.api.i18n.I18nSupport
-import play.api.mvc._
+import play.api.mvc.*
 import services.ReviewService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.{duplicate_process_code_error, fact_check_content_review}
@@ -41,9 +41,10 @@ class FactCheckController @Inject() (
     with I18nSupport {
 
   val logger: Logger = Logger(getClass)
-  implicit val ec: ExecutionContext = mcc.executionContext
+  given ec: ExecutionContext = mcc.executionContext
 
-  def approval(id: String): Action[AnyContent] = factCheckerAction.async { implicit request =>
+  def approval(id: String): Action[AnyContent] = factCheckerAction.async { request =>
+    given Request[AnyContent] = request
     reviewService.approvalFactCheck(id).flatMap {
       case Right(approvalProcessReview) => Future.successful(Ok(view(approvalProcessReview)))
       case Left(NotFoundError) =>

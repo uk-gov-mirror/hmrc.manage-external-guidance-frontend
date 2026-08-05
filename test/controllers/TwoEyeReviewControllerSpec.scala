@@ -41,7 +41,7 @@ class TwoEyeReviewControllerSpec extends ControllerBaseSpec with GuiceOneAppPerS
 
   private trait Test extends ReviewData {
 
-    implicit val hc: HeaderCarrier = HeaderCarrier()
+    given hc: HeaderCarrier = HeaderCarrier()
 
     val errorHandler: ErrorHandler = injector.instanceOf[ErrorHandler]
     val view = injector.instanceOf[twoeye_content_review]
@@ -68,7 +68,7 @@ class TwoEyeReviewControllerSpec extends ControllerBaseSpec with GuiceOneAppPerS
         messagesControllerComponents)
 
 
-    implicit val messages: Messages = messagesApi.preferred(FakeRequest("GET", "/"))
+    given messages: Messages = messagesApi.preferred(FakeRequest("GET", "/"))
     val fakeGetRequest = FakeRequest("GET", "/")
     val fakePostRequest: FakeRequest[AnyContentAsFormUrlEncoded] = FakeRequest("POST", "/").withFormUrlEncodedBody()
   }
@@ -194,7 +194,7 @@ class TwoEyeReviewControllerSpec extends ControllerBaseSpec with GuiceOneAppPerS
       val result: Future[Result] = reviewController.onSubmit(id)(fakePostRequest)
 
       contentType(result) shouldBe Some("text/html")
-      contentAsString(result) shouldBe confirmationView()(fakeGetRequest, messages).toString
+      contentAsString(result) shouldBe confirmationView()(using fakeGetRequest, messages).toString
     }
 
     "Return the Http status Not found when the process review does not exist" in new Test {

@@ -29,5 +29,5 @@ case class CachedProcessSummary(
   expiryTime: Instant
 )
 object CachedProcessSummary {
-  implicit lazy val formats: Format[CachedProcessSummary] = Json.format[CachedProcessSummary]
+  given formats: Format[CachedProcessSummary] = Json.format[CachedProcessSummary]
 }

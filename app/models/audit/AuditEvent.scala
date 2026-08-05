@@ -29,7 +29,7 @@ abstract class AuditEvent {
 object AuditEvent extends JsonObjectSugar {
   val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
-  implicit val writes: Writes[AuditEvent] = Writes { event =>
+  given writes: Writes[AuditEvent] = Writes { event =>
     jsonObjNoNulls(
       "PID" -> event.auditInfo.pid,
       "processID" -> event.auditInfo.processId,

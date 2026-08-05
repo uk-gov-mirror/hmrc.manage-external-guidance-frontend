@@ -35,27 +35,27 @@ class ProcessAdminService @Inject()(
 
   val logger = Logger(getClass)
 
-  def publishedSummaries(implicit context: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[List[ProcessSummary]]] =
+  def publishedSummaries(using context: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[List[ProcessSummary]]] =
     published.summaries
 
-  def approvalSummaries(implicit context: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[List[ProcessSummary]]] =
+  def approvalSummaries(using context: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[List[ProcessSummary]]] =
     approvals.summaries
 
-  def archivedSummaries(implicit context: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[List[ProcessSummary]]] =
+  def archivedSummaries(using context: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[List[ProcessSummary]]] =
     archived.summaries
 
-  def getPublishedByProcessCode(code: String)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] =
+  def getPublishedByProcessCode(code: String)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] =
     published.getPublishedByProcessCode(code)
 
-  def getApprovalByProcessCode(code: String)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] =
+  def getApprovalByProcessCode(code: String)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] =
     approvals.getApprovalByProcessCode(code)
 
-  def getArchivedById(id: String)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] =
+  def getArchivedById(id: String)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] =
     archived.getArchivedById(id)
 
-  def activeSummaries(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[List[CachedProcessSummary]]] = viewer.listActive()
+  def activeSummaries(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[List[CachedProcessSummary]]] = viewer.listActive()
 
-  def getActive(id: String, version: Long, timescalesVersion: Option[Long], ratesVersion: Option[Long])(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] = 
+  def getActive(id: String, version: Long, timescalesVersion: Option[Long], ratesVersion: Option[Long])(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] = 
     viewer.get(id, version, timescalesVersion, ratesVersion)
 
 }

@@ -27,11 +27,11 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class RatesService @Inject() (ratesConnector: RatesConnector) {
-  def submitRates(rates: JsValue)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[LabelledDataUpdateStatus]] =
+  def submitRates(rates: JsValue)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[LabelledDataUpdateStatus]] =
     ratesConnector.submitRates(rates)
 
-  def details()(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[LabelledDataUpdateStatus]] = ratesConnector.details()
+  def details()(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[LabelledDataUpdateStatus]] = ratesConnector.details()
 
-  def get()(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] = ratesConnector.get()
+  def get()(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] = ratesConnector.get()
 
 }

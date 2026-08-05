@@ -45,12 +45,12 @@ class TwoEyeReviewerAuthenticatedActionSpec extends ControllerBaseSpec with Mock
     val path: String = "/path"
     val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", path)
 
-    implicit val hc: HeaderCarrier = HeaderCarrier()
-    implicit val ec: ExecutionContext = app.injector.instanceOf[ExecutionContext]
+    given hc: HeaderCarrier = HeaderCarrier()
+    given ec: ExecutionContext = app.injector.instanceOf[ExecutionContext]
 
     lazy val mockUnauthorizedReviewErrorHandler: UnauthorizedReviewErrorHandler = mock[UnauthorizedReviewErrorHandler]
     (mockUnauthorizedReviewErrorHandler
-      .standardErrorTemplate(_: String, _: String, _: String)(_: Request[_]))
+      .standardErrorTemplate(_: String, _: String, _: String)(using _: Request[_]))
       .stubs(*, *, *, *)
       .returns(Future.successful(Html("")))
 

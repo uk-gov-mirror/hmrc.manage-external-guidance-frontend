@@ -19,7 +19,7 @@ package connectors.httpParsers
 import java.time.LocalDate
 
 import base.BaseSpec
-import connectors.httpParsers.ApprovalHttpParser._
+import connectors.httpParsers.ApprovalHttpParser.{getApprovalSummaryListHttpReads, saveApprovalHttpReads}
 import models.ReviewType.ReviewType2i
 import models.errors.{InternalServerError, InvalidProcessError}
 import models.{ApprovalProcessSummary, ApprovalResponse, ApprovalStatus, RequestOutcome}

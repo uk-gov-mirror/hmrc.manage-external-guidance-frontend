@@ -45,7 +45,7 @@ class ProcessListSpec extends views.ViewSpecBase {
     val summaries = List(ProcessSummary("id", "processCode", 1, "author", None, ZonedDateTime.now, "actionedby", "Status"))
     val activeSummaries = List(CachedProcessSummary("id", 123456789L, None, None, "process title", Instant.now))
 
-    implicit val fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/")
+    given fakeRequest: FakeRequest[AnyContentAsEmpty.type] = FakeRequest("GET", "/")
   }
 
   "Admin pages" should {

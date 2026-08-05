@@ -25,6 +25,6 @@ object ReviewType extends Enumerable.Implicits {
 
   val values: Seq[ReviewType] = Seq(ReviewType2i, ReviewTypeFactCheck)
 
-  implicit val enumerable: Enumerable[ReviewType] = Enumerable(values.map(v => v.toString -> v): _*)
+  given enumerable: Enumerable[ReviewType] = Enumerable(values.map(v => v.toString -> v): _*)
 
 }

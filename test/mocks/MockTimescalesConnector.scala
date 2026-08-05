@@ -33,12 +33,12 @@ trait MockTimescalesConnector extends TestSuite with MockFactory {
   object MockTimescalesConnector {
     def submitTimescales(timescales: JsValue): CallHandler[Future[RequestOutcome[LabelledDataUpdateStatus]]] =
       (mockTimescalesConnector
-        .submitTimescales(_: JsValue)(_: ExecutionContext, _: HeaderCarrier))
+        .submitTimescales(_: JsValue)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(timescales, *, *)
 
     def details(): CallHandler[Future[RequestOutcome[LabelledDataUpdateStatus]]] =
       (mockTimescalesConnector
-        .details()(_: ExecutionContext, _: HeaderCarrier))
+        .details()(using _: ExecutionContext, _: HeaderCarrier))
         .expects(*, *)
   }
 }

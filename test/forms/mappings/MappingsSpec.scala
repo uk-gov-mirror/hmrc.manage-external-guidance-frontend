@@ -35,14 +35,14 @@ object MappingsSpec {
 
     val values: Set[A] = Set(B, C)
 
-    implicit val aEnumerable: Enumerable[A] = Enumerable(values.toSeq.map(v => v.toString -> v): _*)
+    given aEnumerable: Enumerable[A] = Enumerable(values.toSeq.map(v => v.toString -> v): _*)
   }
 
 }
 
 class MappingsSpec extends BaseSpec with OptionValues with Mappings {
 
-  import MappingsSpec._
+  import MappingsSpec.*
 
   "enumerable" should {
 

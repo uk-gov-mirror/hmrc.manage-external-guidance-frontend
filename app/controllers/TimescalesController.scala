@@ -18,9 +18,8 @@ package controllers
 
 import javax.inject.{Inject, Singleton}
 import models.errors.{Error, ForbiddenError, ValidationError}
-import config.ErrorHandler
 import play.api.libs.json.{JsValue, Json}
-import play.api.mvc._
+import play.api.mvc.*
 import controllers.actions.TimescalesAction
 import services.TimescalesService
 import views.html.upload_timescales
@@ -31,18 +30,24 @@ import scala.concurrent.Future
 @Singleton
 class TimescalesController @Inject() (timescalesService: TimescalesService,
                                       labelledDataSecuredAction: TimescalesAction,
-                                      errorHandler: ErrorHandler,
                                       view: upload_timescales,
                                       uploadCompleteView: labelleddata_upload_complete,
-                                      mcc: MessagesControllerComponents) extends AbstractLabelledDataController(labelledDataSecuredAction, errorHandler, uploadCompleteView, mcc) {
+                                      mcc: MessagesControllerComponents) extends AbstractLabelledDataController(labelledDataSecuredAction, uploadCompleteView, mcc) {
 
   val dataName: String = "timescales"
-  def submitData(json: JsValue)(implicit request: Request[_]): Future[RequestOutcome[LabelledDataUpdateStatus]] = timescalesService.submitTimescales(json)
-  def getData: Action[AnyContent] = Action.async { implicit request => getLabelledData(timescalesService.get _)}
+  def submitData(json: JsValue)(using request: Request[_]): Future[RequestOutcome[LabelledDataUpdateStatus]] = timescalesService.submitTimescales(json)
+  def getData: Action[AnyContent] = Action.async { request =>
+    given Request[AnyContent] = request
+    getLabelledData(timescalesService.get _)
+  }
   def mainPageUrl: String = controllers.routes.TimescalesController.home.url
-  def home: Action[AnyContent] = labelledDataSecuredAction.async{implicit request => uploadPage()}
+  def home: Action[AnyContent] = labelledDataSecuredAction.async{
+    request =>
+      given Request[AnyContent] = request
+      uploadPage()
+  }
 
-  def uploadPage(error: Option[String] = None)(implicit request: Request[_]): Future[Result] =
+  def uploadPage(error: Option[String] = None)(using request: Request[_]): Future[Result] =
     timescalesService.details().map {
       case Right(response) =>
         val updateDisplayDetails: Option[UpdateDisplayDetails] = response.lastUpdate.map(UpdateDisplayDetails(_))

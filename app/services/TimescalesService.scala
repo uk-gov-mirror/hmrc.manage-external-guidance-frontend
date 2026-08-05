@@ -27,11 +27,11 @@ import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class TimescalesService @Inject() (timescalesConnector: TimescalesConnector) {
-  def submitTimescales(timescales: JsValue)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[LabelledDataUpdateStatus]] =
+  def submitTimescales(timescales: JsValue)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[LabelledDataUpdateStatus]] =
     timescalesConnector.submitTimescales(timescales)
 
-  def details()(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[LabelledDataUpdateStatus]] = timescalesConnector.details()
+  def details()(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[LabelledDataUpdateStatus]] = timescalesConnector.details()
 
-  def get()(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] = timescalesConnector.get()
+  def get()(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] = timescalesConnector.get()
 
 }

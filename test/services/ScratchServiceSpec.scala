@@ -33,7 +33,7 @@ class ScratchServiceSpec extends BaseSpec {
 
   private trait Test extends MockScratchConnector {
 
-    implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
+    given headerCarrier: HeaderCarrier = HeaderCarrier()
 
     lazy val scratchService: ScratchService = new ScratchService(mockScratchConnector)
 
@@ -79,7 +79,7 @@ class ScratchServiceSpec extends BaseSpec {
       result.onComplete {
         case Success(response) =>
           response match {
-            case Right(scratchResponse) => fail("Scratch response returned when an error was expected")
+            case Right(_) => fail("Scratch response returned when an error was expected")
             case Left(error) => error shouldBe InternalServerError
           }
 

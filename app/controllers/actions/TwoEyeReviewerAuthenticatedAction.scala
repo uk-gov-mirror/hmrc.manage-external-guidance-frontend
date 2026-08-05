@@ -18,10 +18,10 @@ package controllers.actions
 
 import config.{AppConfig, UnauthorizedReviewErrorHandler}
 import javax.inject.Inject
-import play.api.mvc._
+import play.api.mvc.*
 import play.api.{Configuration, Environment}
 import uk.gov.hmrc.auth.core.AuthProvider.PrivilegedApplication
-import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.*
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import scala.concurrent.ExecutionContext
 
@@ -35,7 +35,7 @@ class TwoEyeReviewerAuthenticatedAction @Inject() (
     val env: Environment,
     val errorHandler: UnauthorizedReviewErrorHandler
 )(
-    implicit val executionContext: ExecutionContext
+    using val executionContext: ExecutionContext
 ) extends PrivilegedAction with TwoEyeReviewerAction {
 
   val predicate: Predicate = Enrolment(appConfig.twoEyeReviewerRole) and AuthProviders(PrivilegedApplication)

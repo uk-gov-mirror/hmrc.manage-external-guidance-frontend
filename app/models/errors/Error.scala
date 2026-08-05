@@ -21,7 +21,7 @@ import play.api.libs.json.{Json, OFormat}
 case class ProcessError(message: String, stanza: String)
 
 object ProcessError {
-  implicit val formats: OFormat[ProcessError] = Json.format[ProcessError]
+  given formats: OFormat[ProcessError] = Json.format[ProcessError]
 }
 
 case class Error(code: String, message: Option[String], messages: Option[List[ProcessError]])
@@ -31,7 +31,7 @@ object Error {
   def apply(code: String, msg: String): Error = Error(code, Some(msg), None)
   def apply(code: String, processErrors: List[ProcessError]): Error = Error(code, None, Some(processErrors))
   def apply(processErrors: List[ProcessError]): Error = Error(UnprocessableEntity, None, Some(processErrors))
-  implicit val formats: OFormat[Error] = Json.format[Error]
+  given formats: OFormat[Error] = Json.format[Error]
 }
 
 object InternalServiceError extends Error("INTERNAL_SERVER_ERROR", Some("An error occurred whilst processing your request."), None)

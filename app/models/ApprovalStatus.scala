@@ -32,6 +32,6 @@ object ApprovalStatus extends Enumerable.Implicits {
 
   val inProgress: Seq[ApprovalStatus] = Seq(Submitted, InProgress)
 
-  implicit val enumerable: Enumerable[ApprovalStatus] = Enumerable(values.map(v => v.toString -> v): _*)
+  given enumerable: Enumerable[ApprovalStatus] = Enumerable(values.map(v => v.toString -> v): _*)
 
 }

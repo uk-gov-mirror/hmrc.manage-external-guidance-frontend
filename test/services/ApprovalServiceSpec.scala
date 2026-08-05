@@ -32,7 +32,7 @@ class ApprovalServiceSpec extends BaseSpec {
 
   private trait Test extends MockApprovalConnector {
 
-    implicit val headerCarrier: HeaderCarrier = HeaderCarrier()
+    given headerCarrier: HeaderCarrier = HeaderCarrier()
 
     lazy val service: ApprovalService = new ApprovalService(mockApprovalConnector)
 

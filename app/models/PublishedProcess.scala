@@ -23,6 +23,6 @@ import java.time.ZonedDateTime
 case class PublishedProcess(id: String, version: Int, datePublished: ZonedDateTime, process: JsObject, publishedBy: String, processCode: String)
 
 object PublishedProcess {
-  implicit val formats: OFormat[PublishedProcess] = Json.format[PublishedProcess]
+  given formats: OFormat[PublishedProcess] = Json.format[PublishedProcess]
 }
 

@@ -17,10 +17,10 @@
 package controllers.actions
 
 import models.requests.IdentifierRequest
-import play.api.mvc.Results._
-import play.api.mvc._
+import play.api.mvc.Results.*
+import play.api.mvc.*
 import play.api.Logger
-import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.*
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.auth.core.retrieve.{Credentials, Name, ~}
@@ -35,7 +35,7 @@ trait IdentifierAction extends ActionBuilder[IdentifierRequest, AnyContent] with
 
 trait PrivilegedAction extends AuthorisedFunctions{
   val predicate: Predicate
-  implicit val executionContext: ExecutionContext
+  given executionContext: ExecutionContext
   val logger: Logger = Logger(getClass)
   val appConfig: AppConfig
   val errorHandler: FrontendErrorHandler
@@ -43,7 +43,7 @@ trait PrivilegedAction extends AuthorisedFunctions{
 
   def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
 
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+    given hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
     val unauthorizedResult =
       errorHandler.standardErrorTemplate(

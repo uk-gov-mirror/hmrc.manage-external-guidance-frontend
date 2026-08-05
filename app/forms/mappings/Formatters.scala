@@ -36,7 +36,7 @@ trait Formatters {
       Map(key -> value.trim)
   }
 
-  private[mappings] def enumerableFormatter[A](requiredKey: String, invalidKey: String)(implicit ev: Enumerable[A]): Formatter[A] =
+  private[mappings] def enumerableFormatter[A](requiredKey: String, invalidKey: String)(using ev: Enumerable[A]): Formatter[A] =
     new Formatter[A] {
 
       private val baseFormatter = stringFormatter(requiredKey)

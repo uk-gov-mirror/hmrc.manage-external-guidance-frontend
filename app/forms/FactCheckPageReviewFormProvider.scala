@@ -23,7 +23,7 @@ import models.YesNoAnswer
 import models.forms.FactCheckPageReview
 
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 
 class FactCheckPageReviewFormProvider @Inject() extends Mappings with Constraints {
 
@@ -31,7 +31,7 @@ class FactCheckPageReviewFormProvider @Inject() extends Mappings with Constraint
     Form(
       mapping(
         "answer" -> enumerable[YesNoAnswer]("factCheckPageReview.answer.error.required")
-      )(FactCheckPageReview.apply)(FactCheckPageReview.unapply)
+      )(FactCheckPageReview.apply)(fcpr => Some(fcpr.answer))
     )
   }
 }

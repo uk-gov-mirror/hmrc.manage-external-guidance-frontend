@@ -18,9 +18,8 @@ package controllers
 
 import javax.inject.{Inject, Singleton}
 import models.errors.{Error, ForbiddenError, ValidationError}
-import config.ErrorHandler
 import play.api.libs.json.{JsValue, Json}
-import play.api.mvc._
+import play.api.mvc.*
 import controllers.actions.RatesAction
 import services.RatesService
 import views.html.upload_rates
@@ -31,18 +30,23 @@ import scala.concurrent.Future
 @Singleton
 class RatesController @Inject()(ratesService: RatesService,
                                 labelledDataSecuredAction: RatesAction,
-                                errorHandler: ErrorHandler,
                                 view: upload_rates,
                                 uploadCompleteView: labelleddata_upload_complete,
-                                mcc: MessagesControllerComponents) extends AbstractLabelledDataController(labelledDataSecuredAction, errorHandler, uploadCompleteView, mcc) {
+                                mcc: MessagesControllerComponents) extends AbstractLabelledDataController(labelledDataSecuredAction, uploadCompleteView, mcc) {
 
   val dataName: String = "rates"
-  def submitData(json: JsValue)(implicit request: Request[_]): Future[RequestOutcome[LabelledDataUpdateStatus]] = ratesService.submitRates(json)
-  def getData: Action[AnyContent] = Action.async { implicit request => getLabelledData(ratesService.get _)}
+  def submitData(json: JsValue)(using request: Request[_]): Future[RequestOutcome[LabelledDataUpdateStatus]] = ratesService.submitRates(json)
+  def getData: Action[AnyContent] = Action.async { request =>
+    given Request[AnyContent] = request
+    getLabelledData(ratesService.get _)
+  }
   def mainPageUrl: String = controllers.routes.RatesController.home.url
-  def home: Action[AnyContent] = labelledDataSecuredAction.async{implicit request => uploadPage()}
+  def home: Action[AnyContent] = labelledDataSecuredAction.async{ request =>
+    given Request[AnyContent] = request
+    uploadPage()
+  }
 
-  def uploadPage(error: Option[String] = None)(implicit request: Request[_]): Future[Result] =
+  def uploadPage(error: Option[String] = None)(using request: Request[_]): Future[Result] =
     ratesService.details().map {
       case Right(response) =>
         val updateDisplayDetails: Option[UpdateDisplayDetails] = response.lastUpdate.map(UpdateDisplayDetails(_))

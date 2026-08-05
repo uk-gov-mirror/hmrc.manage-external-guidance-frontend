@@ -23,7 +23,7 @@ import models.audit.FactCheckCompleteEvent
 import models.errors.{IncompleteDataError, NotFoundError, StaleDataError}
 import play.api.Logger
 import play.api.i18n.I18nSupport
-import play.api.mvc._
+import play.api.mvc.*
 import services.{AuditService, ReviewService}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.{fact_check_complete, fact_check_confirm_error}
@@ -44,9 +44,10 @@ class FactCheckConfirmController @Inject()(
     with I18nSupport {
 
   val logger: Logger = Logger(getClass)
-  implicit val ec: ExecutionContext = mcc.executionContext
+  given ec: ExecutionContext = mcc.executionContext
 
-  def onConfirm(processId: String): Action[AnyContent] = factCheckerAction.async { implicit request =>
+  def onConfirm(processId: String): Action[AnyContent] = factCheckerAction.async { request =>
+    given Request[AnyContent] = request
     reviewService.approvalFactCheckComplete(processId, request.credId, request.name, Complete).flatMap {
       case Right(auditInfo) =>
         auditService.audit(FactCheckCompleteEvent(auditInfo))

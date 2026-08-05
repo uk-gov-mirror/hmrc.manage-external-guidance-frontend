@@ -22,7 +22,7 @@ import org.jsoup.nodes.Document
 import play.api.data.Form
 import views.html.fact_check_page_review
 
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 
 class FactCheckPageReviewViewSpec extends ViewSpecBase {
 

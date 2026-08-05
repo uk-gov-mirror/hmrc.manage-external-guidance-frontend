@@ -27,7 +27,7 @@ class HttpParserSpec extends BaseSpec with HttpVerbs with Status with HttpParser
   case class Person(name: String, age: Int)
 
   object Person {
-    implicit val formats: OFormat[Person] = Json.format[Person]
+    given formats: OFormat[Person] = Json.format[Person]
   }
 
   "Calling validateJson with a valid JSON response" should {

@@ -35,30 +35,30 @@ trait MockApprovalConnector extends TestSuite with MockFactory {
 
     def approvalSummaries: CallHandler[Future[RequestOutcome[List[ApprovalProcessSummary]]]] =
       (mockApprovalConnector
-        .approvalSummaries(_: ExecutionContext, _: HeaderCarrier))
+        .approvalSummaries(using _: ExecutionContext, _: HeaderCarrier))
         .expects(*, *)
 
     def submitFor2iReview(process: JsValue): CallHandler[Future[RequestOutcome[ApprovalResponse]]] = {
 
       (mockApprovalConnector
-        .submitFor2iReview(_: JsValue)(_: ExecutionContext, _: HeaderCarrier))
+        .submitFor2iReview(_: JsValue)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(process, *, *)
     }
 
     def submitForFactCheck(process: JsValue): CallHandler[Future[RequestOutcome[ApprovalResponse]]] = {
       (mockApprovalConnector
-        .submitForFactCheck(_: JsValue)(_: ExecutionContext, _: HeaderCarrier))
+        .submitForFactCheck(_: JsValue)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(process, *, *)
     }
 
     def summaries: CallHandler[Future[RequestOutcome[List[ProcessSummary]]]] =
       (mockApprovalConnector
-        .summaries(_: ExecutionContext, _: HeaderCarrier))
+        .summaries(using _: ExecutionContext, _: HeaderCarrier))
         .expects(*, *)
 
     def getApprovalByProcessCode(code: String): CallHandler[Future[RequestOutcome[JsValue]]] = {
       (mockApprovalConnector
-        .getApprovalByProcessCode(_: String)(_: ExecutionContext, _: HeaderCarrier))
+        .getApprovalByProcessCode(_: String)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(code, *, *)
     }
 

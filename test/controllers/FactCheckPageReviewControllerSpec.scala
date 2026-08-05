@@ -37,7 +37,7 @@ class FactCheckPageReviewControllerSpec extends ControllerBaseSpec with GuiceOne
 
   private trait Test extends ReviewData {
 
-    implicit val hc: HeaderCarrier = HeaderCarrier()
+    given hc: HeaderCarrier = HeaderCarrier()
 
     val errorHandler: ErrorHandler = injector.instanceOf[ErrorHandler]
     val view: fact_check_page_review = injector.instanceOf[fact_check_page_review]

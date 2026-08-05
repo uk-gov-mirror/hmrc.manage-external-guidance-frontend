@@ -20,13 +20,13 @@ import config.ErrorHandler
 import controllers.actions.FactCheckerAction
 import forms.FactCheckPageReviewFormProvider
 import models.PageReviewDetail
-import models.PageReviewStatus._
+import models.PageReviewStatus.*
 import models.errors.{NotFoundError, StaleDataError}
 import models.forms.FactCheckPageReview
 import play.api.Logger
 import play.api.data.Form
 import play.api.i18n.I18nSupport
-import play.api.mvc._
+import play.api.mvc.*
 import services.ReviewService
 import uk.gov.hmrc.play.bootstrap.controller.WithUnsafeDefaultFormBinding
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -48,9 +48,10 @@ class FactCheckPageReviewController @Inject() (
     with I18nSupport {
 
   val logger: Logger = Logger(getClass)
-  implicit val ec: ExecutionContext = mcc.executionContext
+  given ec: ExecutionContext = mcc.executionContext
 
-  def onPageLoad(processId: String, pageUrl: String, index: Int): Action[AnyContent] = factCheckerAction.async { implicit request =>
+  def onPageLoad(processId: String, pageUrl: String, index: Int): Action[AnyContent] = factCheckerAction.async { request =>
+    given Request[AnyContent] = request
     reviewService.factCheckPageInfo(processId, s"/$pageUrl").flatMap {
       case Right(pageReviewDetail) =>
         val form: Form[FactCheckPageReview] = pageReviewDetail.result.fold(formProvider()) { answer =>
@@ -67,7 +68,8 @@ class FactCheckPageReviewController @Inject() (
   def onSubmit(processId: String,
                pageUrl: String,
                pageTitle: String,
-               index: Int): Action[AnyContent] = factCheckerAction.async { implicit request =>
+               index: Int): Action[AnyContent] = factCheckerAction.async { request =>
+    given Request[AnyContent] = request
     formProvider()
       .bindFromRequest()
       .fold(

@@ -20,7 +20,7 @@ import forms.mappings.{Constraints, Mappings}
 import models.YesNoAnswer
 import models.forms.UnpublishConfirmation
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 
 import javax.inject.Inject
 
@@ -30,7 +30,7 @@ class UnpublishConfirmationFormProvider @Inject() extends Mappings with Constrai
     Form(
       mapping(
         "value" -> enumerable[YesNoAnswer]("unpublish.answer.error.required")
-      )(UnpublishConfirmation.apply)(UnpublishConfirmation.unapply)
+      )(UnpublishConfirmation.apply)(uc => Some(uc.answer))
     )
   }
 }

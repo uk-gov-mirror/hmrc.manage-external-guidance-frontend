@@ -31,7 +31,7 @@ import uk.gov.hmrc.http.StringContextOps
 class ArchiveConnector @Inject()(httpClient: HttpClientV2, appConfig: AppConfig) {
   val logger: Logger = Logger(getClass)
 
-  def summaries(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[List[ProcessSummary]]] = {
+  def summaries(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[List[ProcessSummary]]] = {
     val summaryEndPoint: String = appConfig.externalGuidanceBaseUrl + "/external-guidance/archived"
 
     import connectors.httpParsers.PublishedProcessHttpParser.processSummaryHttpReads
@@ -39,7 +39,7 @@ class ArchiveConnector @Inject()(httpClient: HttpClientV2, appConfig: AppConfig)
     httpClient.get(url"$summaryEndPoint").execute[RequestOutcome[List[ProcessSummary]]]
   }
 
-  def archive(id: String)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[Boolean]] = {
+  def archive(id: String)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[Boolean]] = {
     val archiveEndPoint: String = appConfig.externalGuidanceBaseUrl + s"/external-guidance/archive/$id"
 
     import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
@@ -52,7 +52,7 @@ class ArchiveConnector @Inject()(httpClient: HttpClientV2, appConfig: AppConfig)
       }
   }
 
-  def getArchivedById(id: String)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] = {
+  def getArchivedById(id: String)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[JsValue]] = {
     val publishedEndPoint: String = appConfig.externalGuidanceBaseUrl + s"/external-guidance/archived/$id"
 
     import connectors.httpParsers.PublishedProcessHttpParser.processHttpReads

@@ -34,18 +34,18 @@ trait MockArchiveConnector extends TestSuite with MockFactory {
 
     def archive(id: String): CallHandler[Future[RequestOutcome[Boolean]]] =
       (mockArchiveConnector
-        .archive(_: String)(_: ExecutionContext, _: HeaderCarrier))
+        .archive(_: String)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(id, *, *)
 
     def summaries: CallHandler[Future[RequestOutcome[List[ProcessSummary]]]] =
       (mockArchiveConnector
-        .summaries(_: ExecutionContext, _: HeaderCarrier))
+        .summaries(using _: ExecutionContext, _: HeaderCarrier))
         .expects(*, *)
 
 
     def getArchivedById(id: String): CallHandler[Future[RequestOutcome[JsValue]]] =
       (mockArchiveConnector
-        .getArchivedById(_: String)(_: ExecutionContext, _: HeaderCarrier))
+        .getArchivedById(_: String)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(id, *, *)
 
   }

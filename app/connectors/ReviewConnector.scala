@@ -17,9 +17,10 @@
 package connectors
 
 import config.AppConfig
-import connectors.httpParsers.ReviewHttpParser._
+import connectors.httpParsers.ReviewHttpParser.given 
 import javax.inject.{Inject, Singleton}
 import play.api.libs.json.Json
+import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 import models.audit.AuditInfo
 import models.{ApprovalProcessReview, ApprovalProcessStatusChange, PageReviewDetail, RequestOutcome}
 import uk.gov.hmrc.http.HeaderCarrier
@@ -30,14 +31,14 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class ReviewConnector @Inject() (httpClient: HttpClientV2, appConfig: AppConfig) {
 
-  def approval2iReview(id: String)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[ApprovalProcessReview]] = {
+  def approval2iReview(id: String)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[ApprovalProcessReview]] = {
 
     val reviewEndPoint: String = s"${appConfig.externalGuidanceBaseUrl}/external-guidance/approval/$id/2i-review"
 
     httpClient.get(url"$reviewEndPoint").execute[RequestOutcome[ApprovalProcessReview]]
   }
 
-  def approval2iReviewConfirmCheck(id: String)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[Unit]] = {
+  def approval2iReviewConfirmCheck(id: String)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[Unit]] = {
 
     val reviewEndPoint: String = s"${appConfig.externalGuidanceBaseUrl}/external-guidance/approval/$id/2i-review/confirm"
 
@@ -47,14 +48,14 @@ class ReviewConnector @Inject() (httpClient: HttpClientV2, appConfig: AppConfig)
   def approval2iReviewComplete(
       id: String,
       info: ApprovalProcessStatusChange
-  )(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[AuditInfo]] = {
+  )(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[AuditInfo]] = {
 
     val reviewEndPoint: String = s"${appConfig.externalGuidanceBaseUrl}/external-guidance/approval/$id/2i-review"
 
     httpClient.post(url"$reviewEndPoint").withBody(Json.toJson(info)).execute[RequestOutcome[AuditInfo]]
   }
 
-  def approval2iReviewPageInfo(id: String, pageUrl: String)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[PageReviewDetail]] = {
+  def approval2iReviewPageInfo(id: String, pageUrl: String)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[PageReviewDetail]] = {
 
     val reviewEndPoint: String = s"${appConfig.externalGuidanceBaseUrl}/external-guidance/approval/$id/2i-page-review$pageUrl"
 
@@ -65,14 +66,14 @@ class ReviewConnector @Inject() (httpClient: HttpClientV2, appConfig: AppConfig)
       id: String,
       pageUrl: String,
       info: PageReviewDetail
-  )(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[Unit]] = {
+  )(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[Unit]] = {
 
     val reviewEndPoint: String = s"${appConfig.externalGuidanceBaseUrl}/external-guidance/approval/$id/2i-page-review$pageUrl"
 
     httpClient.post(url"$reviewEndPoint").withBody(Json.toJson(info)).execute[RequestOutcome[Unit]]
   }
 
-  def approvalFactCheck(id: String)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[ApprovalProcessReview]] = {
+  def approvalFactCheck(id: String)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[ApprovalProcessReview]] = {
 
     val reviewEndPoint: String = s"${appConfig.externalGuidanceBaseUrl}/external-guidance/approval/$id/fact-check"
 
@@ -82,14 +83,14 @@ class ReviewConnector @Inject() (httpClient: HttpClientV2, appConfig: AppConfig)
   def approvalFactCheckComplete(
       id: String,
       info: ApprovalProcessStatusChange
-  )(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[AuditInfo]] = {
+  )(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[AuditInfo]] = {
 
     val reviewEndPoint: String = s"${appConfig.externalGuidanceBaseUrl}/external-guidance/approval/$id/fact-check"
 
     httpClient.post(url"$reviewEndPoint").withBody(Json.toJson(info)).execute[RequestOutcome[AuditInfo]]
   }
 
-  def factCheckPageInfo(id: String, pageUrl: String)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[PageReviewDetail]] = {
+  def factCheckPageInfo(id: String, pageUrl: String)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[PageReviewDetail]] = {
 
     val reviewEndPoint: String = s"${appConfig.externalGuidanceBaseUrl}/external-guidance/approval/$id/fact-check-page-review$pageUrl"
 
@@ -97,7 +98,7 @@ class ReviewConnector @Inject() (httpClient: HttpClientV2, appConfig: AppConfig)
   }
 
   def factCheckPageComplete(id: String, pageUrl: String, info: PageReviewDetail)(
-      implicit ec: ExecutionContext,
+      using ec: ExecutionContext,
       hc: HeaderCarrier
   ): Future[RequestOutcome[Unit]] = {
 

@@ -33,7 +33,7 @@ trait MockAuditService extends TestSuite with MockFactory {
     def audit(event: AuditEvent, path: Option[String] = None): CallHandler[Future[Unit]] = {
 
       (mockAuditService
-        .audit(_: AuditEvent, _: Option[String])(_: HeaderCarrier, _: ExecutionContext))
+        .audit(_: AuditEvent, _: Option[String])(using _: HeaderCarrier, _: ExecutionContext))
         .expects(event, path, *, *)
     }
 

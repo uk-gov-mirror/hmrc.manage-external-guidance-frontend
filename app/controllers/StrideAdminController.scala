@@ -16,39 +16,49 @@
 
 package controllers
 
-import config.{AppConfig, ErrorHandler}
+import config.ErrorHandler
 import controllers.actions.DesignerAction
-import play.api.mvc._
+import play.api.mvc.*
 import services.ProcessAdminService
-import views.html.process_admin.{admin_signin, approval_summaries, archived_summaries, published_summaries, active_summaries}
+import views.html.process_admin.{approval_summaries, archived_summaries, published_summaries, active_summaries}
 import javax.inject.{Inject, Singleton}
 import models.admin.navigation.{AdminPage, PublishedList, ApprovalList}
 
 @Singleton
 class StrideAdminController @Inject() (
-    appConfig: AppConfig,
     designerAuthenticatedAction: DesignerAction,
     errorHandler: ErrorHandler,
     publishedView: published_summaries,
     archivedView: archived_summaries,
     approvalsView: approval_summaries,
     activeView: active_summaries,
-    signin: admin_signin,
     adminService: ProcessAdminService,
     mcc: MessagesControllerComponents
-) extends AbstractProcessAdminController(appConfig, errorHandler, publishedView, archivedView, approvalsView, activeView, adminService, mcc) {
+) extends AbstractProcessAdminController(errorHandler, publishedView, archivedView, approvalsView, activeView, adminService, mcc) {
 
   val pages: List[AdminPage] = List(
     AdminPage(PublishedList, s"/external-guidance${controllers.routes.StrideAdminController.listPublished.url}", "published.switch"),
     AdminPage(ApprovalList, s"/external-guidance${controllers.routes.StrideAdminController.listApprovals.url}", "approvals.switch")
   )
 
-  def listPublished: Action[AnyContent] = designerAuthenticatedAction.async { implicit request => published(routes.StrideAdminController.getPublished _) }
+  def listPublished: Action[AnyContent] = designerAuthenticatedAction.async { request =>
+    given Request[AnyContent] = request
+    published(routes.StrideAdminController.getPublished _)
+  }
 
-  def getPublished(processCode: String): Action[AnyContent] = designerAuthenticatedAction.async { implicit request => getPublishedGuidance(processCode) }
+  def getPublished(processCode: String): Action[AnyContent] = designerAuthenticatedAction.async { request =>
+    given Request[AnyContent] = request
+    getPublishedGuidance(processCode)
+  }
 
-  def listApprovals: Action[AnyContent] = designerAuthenticatedAction.async { implicit request => approvals(routes.StrideAdminController.getApproval _) }
+  def listApprovals: Action[AnyContent] = designerAuthenticatedAction.async { request =>
+    given Request[AnyContent] = request
+    approvals(routes.StrideAdminController.getApproval _)
+  }
 
-  def getApproval(processCode: String): Action[AnyContent] = designerAuthenticatedAction.async { implicit request => getApprovalGuidance(processCode) }
+  def getApproval(processCode: String): Action[AnyContent] = designerAuthenticatedAction.async { request =>
+    given Request[AnyContent] = request
+    getApprovalGuidance(processCode)
+  }
 
 }

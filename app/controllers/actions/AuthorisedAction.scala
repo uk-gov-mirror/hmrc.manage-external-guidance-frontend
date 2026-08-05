@@ -18,7 +18,7 @@ package controllers.actions
 
 import play.api.mvc.Results.Redirect
 import controllers.{ProcessAdminController, routes}
-import play.api.mvc._
+import play.api.mvc.*
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -26,7 +26,7 @@ case class UserRequest[A](request: Request[A], name: String) extends WrappedRequ
 
 trait AuthorisedAction extends ActionBuilder[UserRequest, AnyContent]
 
-class AuthAction @Inject()(bodyParsers: PlayBodyParsers)(implicit val ec: ExecutionContext) extends AuthorisedAction {
+class AuthAction @Inject()(bodyParsers: PlayBodyParsers)(using val ec: ExecutionContext) extends AuthorisedAction {
   def invokeBlock[A](request: Request[A], block: UserRequest[A] => Future[Result]): Future[Result] =
     request.session.get(ProcessAdminController.userSessionKey) match {
       case Some(name) => block(UserRequest(request, name))

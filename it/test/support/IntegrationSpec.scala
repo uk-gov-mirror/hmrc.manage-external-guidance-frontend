@@ -16,7 +16,7 @@
 
 package support
 
-import org.scalatest._
+import org.scalatest.*
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
@@ -61,7 +61,7 @@ trait IntegrationSpec
     "play.filters.csrf.header.bypassHeaders.Csrf-Token" -> "nocheck"
   )
 
-  override implicit lazy val app: Application = new GuiceApplicationBuilder()
+  override given app: Application = new GuiceApplicationBuilder()
     .in(Environment.simple(mode = Mode.Dev))
     .configure(overriddenConfig)
     .build()

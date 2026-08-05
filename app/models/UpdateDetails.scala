@@ -17,10 +17,10 @@
 package models
 
 import java.time.ZonedDateTime
-import play.api.libs.json._
+import play.api.libs.json.*
 
 case class UpdateDetails(when: ZonedDateTime, credId: String, user: String, email: String, retainedDeletions: List[String] = Nil)
 
 object UpdateDetails {
-  implicit val formats: OFormat[UpdateDetails] = Json.format[UpdateDetails]
+  given formats: OFormat[UpdateDetails] = Json.format[UpdateDetails]
 }

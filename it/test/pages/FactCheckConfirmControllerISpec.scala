@@ -17,7 +17,7 @@
 package pages
 
 import models.audit.AuditInfo
-import play.api.http.Status._
+import play.api.http.Status.*
 import play.api.libs.json.Json
 import play.api.libs.ws.{WSRequest, WSResponse}
 import stubs.{AuditStub, AuthStub, ExternalGuidanceStub}

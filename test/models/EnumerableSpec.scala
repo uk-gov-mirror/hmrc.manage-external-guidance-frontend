@@ -31,7 +31,7 @@ object EnumerableSpec {
 
     val values: Set[Foo] = Set(Bar, Baz)
 
-    implicit val fooEnumerable: Enumerable[Foo] =
+    given fooEnumerable: Enumerable[Foo] =
       Enumerable(values.toSeq.map(v => v.toString -> v): _*)
   }
 }
@@ -43,7 +43,7 @@ class EnumerableSpec extends AnyWordSpec with Matchers with EitherValues with Op
   ".reads" must {
 
     "be found implicitly" in {
-      implicitly[Reads[Foo]]
+      summon[Reads[Foo]]
     }
 
     Foo.values.foreach { value =>
@@ -60,7 +60,7 @@ class EnumerableSpec extends AnyWordSpec with Matchers with EitherValues with Op
   ".writes" must {
 
     "be found implicitly" in {
-      implicitly[Writes[Foo]]
+      summon[Writes[Foo]]
     }
 
     Foo.values.foreach { value =>
@@ -73,7 +73,7 @@ class EnumerableSpec extends AnyWordSpec with Matchers with EitherValues with Op
   ".formats" must {
 
     "be found implicitly" in {
-      implicitly[Format[Foo]]
+      summon[Format[Foo]]
     }
   }
 }

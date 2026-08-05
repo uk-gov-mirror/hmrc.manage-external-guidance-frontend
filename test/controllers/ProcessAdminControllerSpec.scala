@@ -41,7 +41,7 @@ class ProcessAdminControllerSpec extends AnyWordSpec with Matchers with GuiceOne
     private val siview = app.injector.instanceOf[admin_signin]
     
     lazy val errorHandler = app.injector.instanceOf[config.ErrorHandler]
-    implicit val hc: HeaderCarrier = HeaderCarrier()
+    given hc: HeaderCarrier = HeaderCarrier()
     val fakeRequest = FakeRequest("GET", "/")
     val controller = new ProcessAdminController(
                             MockAppConfig,

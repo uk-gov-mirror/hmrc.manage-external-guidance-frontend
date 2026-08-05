@@ -29,7 +29,7 @@ import scala.concurrent.ExecutionContext
 
 trait ConnectorTest extends FutureAwaits with DefaultAwaitTimeout with MockitoSugar {
 
-  implicit val hc: HeaderCarrier = HeaderCarrier()
+  given hc: HeaderCarrier = HeaderCarrier()
   val mockHttpClient: HttpClientV2 = mock[HttpClientV2]
   val requestBuilder: RequestBuilder = mock[RequestBuilder]
   when(mockHttpClient.get(any[URL])(any[HeaderCarrier])).thenReturn(requestBuilder)

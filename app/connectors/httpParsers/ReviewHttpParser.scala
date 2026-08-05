@@ -20,14 +20,14 @@ import models.audit.AuditInfo
 import models.errors.MalformedResponseError
 import models.{ApprovalProcessReview, PageReviewDetail, RequestOutcome}
 import play.api.Logger
-import play.api.http.Status._
+import play.api.http.Status.*
 import uk.gov.hmrc.http.HttpReads
 
 object ReviewHttpParser extends HttpParser {
 
   val logger: Logger = Logger(getClass)
 
-  implicit val getReviewDetailsHttpReads: HttpReads[RequestOutcome[ApprovalProcessReview]] = {
+  given getReviewDetailsHttpReads: HttpReads[RequestOutcome[ApprovalProcessReview]] = {
     case (_, _, response) if response.status == OK =>
       response.validateJson[ApprovalProcessReview] match {
         case Some(data) => Right(data)
@@ -38,12 +38,12 @@ object ReviewHttpParser extends HttpParser {
     case (_, _, response) => Left(response.checkErrorResponse)
   }
 
-  implicit val postReviewCompleteHttpReads: HttpReads[RequestOutcome[Unit]] = {
+  given postReviewCompleteHttpReads: HttpReads[RequestOutcome[Unit]] = {
     case (_, _, response) if response.status == NO_CONTENT => Right(())
     case (_, _, response) => Left(response.checkErrorResponse)
   }
 
-  implicit val getReviewPageDetailsHttpReads: HttpReads[RequestOutcome[PageReviewDetail]] = {
+  given getReviewPageDetailsHttpReads: HttpReads[RequestOutcome[PageReviewDetail]] = {
     case (_, _, response) => response.status match {
       case OK =>
         response.validateJson[PageReviewDetail] match {
@@ -56,7 +56,7 @@ object ReviewHttpParser extends HttpParser {
     }
   }
 
-  implicit val getAuditInfoHttpReads: HttpReads[RequestOutcome[AuditInfo]] = {
+  given getAuditInfoHttpReads: HttpReads[RequestOutcome[AuditInfo]] = {
     case (_, _, response) if response.status == OK =>
       response.validateJson[AuditInfo] match {
         case Some(result) => Right(result)

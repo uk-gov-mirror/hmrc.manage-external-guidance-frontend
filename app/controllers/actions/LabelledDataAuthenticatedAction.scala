@@ -18,10 +18,10 @@ package controllers.actions
 
 import config.{AppConfig, ErrorHandler}
 import javax.inject.Inject
-import play.api.mvc._
+import play.api.mvc.*
 import play.api.{Configuration, Environment}
 import uk.gov.hmrc.auth.core.AuthProvider.PrivilegedApplication
-import uk.gov.hmrc.auth.core._
+import uk.gov.hmrc.auth.core.*
 import uk.gov.hmrc.auth.core.authorise.Predicate
 
 import scala.concurrent.ExecutionContext
@@ -45,7 +45,7 @@ class TimescalesAuthenticatedAction@Inject() (
     val config: Configuration,
     val env: Environment,
     val errorHandler: ErrorHandler
-)(implicit val executionContext: ExecutionContext) extends LabelledDataAuthenticatedAction with TimescalesAction {
+)(using val executionContext: ExecutionContext) extends LabelledDataAuthenticatedAction with TimescalesAction {
   override val continueUrl: String = appConfig.timescalesContinueUrl
 }
 
@@ -58,6 +58,6 @@ class RatesAuthenticatedAction@Inject() (
     val config: Configuration,
     val env: Environment,
     val errorHandler: ErrorHandler
-)(implicit val executionContext: ExecutionContext) extends LabelledDataAuthenticatedAction with RatesAction {
+)(using val executionContext: ExecutionContext) extends LabelledDataAuthenticatedAction with RatesAction {
   override val continueUrl: String = appConfig.ratesContinueUrl
 }

@@ -25,6 +25,6 @@ object AdminSignInForm {
     mapping (
       "name" -> nonEmptyText,
       "password" -> nonEmptyText
-    )(AdminSignInDetails.apply)(AdminSignInDetails.unapply)
+    )(AdminSignInDetails.apply)(asd => Some(Tuple.fromProductTyped(asd)))
   )
 }

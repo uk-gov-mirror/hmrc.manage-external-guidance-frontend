@@ -25,7 +25,7 @@ import models.forms.TwoEyePageReview
 
 import views.html.twoeye_page_review
 
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 
 class TwoEyePageReviewViewSpec extends ViewSpecBase {
 

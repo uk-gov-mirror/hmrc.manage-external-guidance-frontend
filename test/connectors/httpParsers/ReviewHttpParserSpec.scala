@@ -27,8 +27,8 @@ import uk.gov.hmrc.http.HttpResponse
 
 class ReviewHttpParserSpec extends AnyWordSpec with Matchers with ReviewData {
 
-  import connectors.httpParsers.ReviewHttpParser._
-
+  import connectors.httpParsers.ReviewHttpParser.given
+  
   class GetReviewDetailsSetup(status: Int, json: JsValue) {
     private val httpMethod = "GET"
     private val url = "/"

@@ -16,20 +16,19 @@
 
 package connectors.httpParsers
 
-import models.errors._
+import models.errors.*
 import play.api.Logger
-import play.api.libs.json._
+import play.api.libs.json.*
 import uk.gov.hmrc.http.HttpResponse
 
 import scala.util.{Success, Try}
 
 trait HttpParser {
 
-  implicit class KnownJsonResponse(response: HttpResponse) {
+  private val logger: Logger = Logger(HttpParser.this.getClass)
 
-    val logger: Logger = Logger(HttpParser.this.getClass)
-
-    def validateJson[T](implicit reads: Reads[T]): Option[T] = {
+  extension (response: HttpResponse) {
+    def validateJson[T](using reads: Reads[T]): Option[T] = {
       Try(response.json) match {
         case Success(json: JsValue) => parseResult(json)
         case _ =>
@@ -38,7 +37,7 @@ trait HttpParser {
       }
     }
 
-    private def parseResult[T](json: JsValue)(implicit reads: Reads[T]): Option[T] = {
+    private def parseResult[T](json: JsValue)(using reads: Reads[T]): Option[T] = {
       json.validate[T] match {
         case JsSuccess(value, _) => Some(value)
         case JsError(error) =>

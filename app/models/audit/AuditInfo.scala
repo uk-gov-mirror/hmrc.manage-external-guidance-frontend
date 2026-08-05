@@ -27,5 +27,5 @@ case class AuditInfo(pid: String,
                      ocelotVersion: Int)
 
 object AuditInfo {
-  implicit val formats: OFormat[AuditInfo] = Json.format[AuditInfo]
+  given formats: OFormat[AuditInfo] = Json.format[AuditInfo]
 }

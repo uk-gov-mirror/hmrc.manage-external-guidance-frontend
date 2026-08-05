@@ -20,6 +20,7 @@ import javax.inject.{Inject, Singleton}
 
 import scala.concurrent.{ExecutionContext, Future}
 import play.api.libs.json.{Json, JsValue}
+import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.HttpClientV2
 import config.AppConfig
@@ -29,7 +30,7 @@ import uk.gov.hmrc.http.StringContextOps
 @Singleton
 class ScratchConnector @Inject() (httpClient: HttpClientV2, appConfig: AppConfig) {
 
-  def submitScratchProcess(process: JsValue)(implicit ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[ScratchResponse]] = {
+  def submitScratchProcess(process: JsValue)(using ec: ExecutionContext, hc: HeaderCarrier): Future[RequestOutcome[ScratchResponse]] = {
 
     import connectors.httpParsers.ScratchHttpParser.saveScratchProcessHttpReads
 

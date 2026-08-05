@@ -23,5 +23,5 @@ import play.api.libs.json.{Json, OFormat}
 case class ApprovalProcessSummary(id: String, title: String, lastUpdated: LocalDate, status: ApprovalStatus, reviewType: ReviewType, version: Int)
 
 object ApprovalProcessSummary {
-  implicit val formats: OFormat[ApprovalProcessSummary] = Json.format[ApprovalProcessSummary]
+  given formats: OFormat[ApprovalProcessSummary] = Json.format[ApprovalProcessSummary]
 }

@@ -19,10 +19,10 @@ package mocks
 import config.AppConfig
 
 object MockAppConfig extends AppConfig {
-  override val reportAProblemPartialUrl: String = "someUrl"
-  override val reportAProblemNonJSUrl: String = "someJsUrl"
-  override val externalGuidanceBaseUrl: String = "http://external-guidance-base-url"
-  override val appName: String = "manage-external-guidance-frontend"
+  override lazy val reportAProblemPartialUrl: String = "someUrl"
+  override lazy val reportAProblemNonJSUrl: String = "someJsUrl"
+  override lazy val externalGuidanceBaseUrl: String = "http://external-guidance-base-url"
+  override lazy val appName: String = "manage-external-guidance-frontend"
   lazy val loginUrl: String = "http://localhost:9041/stride/sign-in"
   lazy val continueUrl: String = "http://localhost:9740/external-guidance/hello-world"
   lazy val designerRole: String = "Designer"

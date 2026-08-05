@@ -38,7 +38,7 @@ class FactCheckConfirmControllerSpec extends ControllerBaseSpec with GuiceOneApp
 
   private trait Test extends ReviewData {
 
-    implicit val hc: HeaderCarrier = HeaderCarrier()
+    given hc: HeaderCarrier = HeaderCarrier()
 
     val errorHandler: ErrorHandler = injector.instanceOf[ErrorHandler]
 
@@ -48,7 +48,7 @@ class FactCheckConfirmControllerSpec extends ControllerBaseSpec with GuiceOneApp
     val event: FactCheckCompleteEvent = FactCheckCompleteEvent(auditInfo)
 
     def messagesApi: MessagesApi = injector.instanceOf[MessagesApi]
-    implicit val messages: Messages = messagesApi.preferred(FakeRequest("GET", "/"))
+    given messages: Messages = messagesApi.preferred(FakeRequest("GET", "/"))
 
     val reviewController = new FactCheckConfirmController(
       errorHandler,

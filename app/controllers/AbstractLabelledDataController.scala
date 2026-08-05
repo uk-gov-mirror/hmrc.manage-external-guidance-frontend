@@ -16,25 +16,25 @@
 
 package controllers
 
-import config.ErrorHandler
 import play.api.i18n.I18nSupport
 import play.api.libs.json.{JsValue, Json}
-import play.api.mvc._
+import play.api.mvc.*
 import controllers.actions.LabelledDataAction
+import models.requests.IdentifierRequest
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import play.api.Logging
+
 import scala.concurrent.{ExecutionContext, Future}
-import java.nio.file._
+import java.nio.file.*
 import scala.util.{Failure, Success, Try}
-import models.{LabelledDataUpdateStatus, UpdateDisplayDetails, RequestOutcome}
+import models.{LabelledDataUpdateStatus, RequestOutcome, UpdateDisplayDetails}
 import views.html.labelleddata_upload_complete
 
 abstract class AbstractLabelledDataController (
                                       labelledDataSecuredAction: LabelledDataAction,
-                                      errorHandler: ErrorHandler,
                                       uploadComplete: labelleddata_upload_complete,
                                       mcc: MessagesControllerComponents) extends FrontendController(mcc) with I18nSupport with Logging {
-  implicit val ec: ExecutionContext = mcc.executionContext
+  given ec: ExecutionContext = mcc.executionContext
 
   def getLabelledData(dataService: () => Future[RequestOutcome[JsValue]]): Future[Result] =
     dataService().map {
@@ -46,11 +46,12 @@ abstract class AbstractLabelledDataController (
 
   val dataName: String
   def mainPageUrl: String
-  def submitData(json: JsValue)(implicit request: Request[_]): Future[RequestOutcome[LabelledDataUpdateStatus]]
-  def uploadPage(error: Option[String])(implicit request: Request[_]): Future[Result]
+  def submitData(json: JsValue)(using request: Request[_]): Future[RequestOutcome[LabelledDataUpdateStatus]]
+  def uploadPage(error: Option[String])(using request: Request[_]): Future[Result]
 
   def upload: Action[play.api.mvc.MultipartFormData[play.api.libs.Files.TemporaryFile]] =
-    labelledDataSecuredAction.async(parse.multipartFormData) { implicit request =>
+    labelledDataSecuredAction.async(parse.multipartFormData) { request =>
+      given  Request[play.api.mvc.MultipartFormData[play.api.libs.Files.TemporaryFile]] = request
       request.body.file(dataName) match {
         case Some(data) if data.contentType.fold(false)(_.contains("json")) =>
           readJsonFile(data.ref.path) match {

@@ -34,22 +34,22 @@ trait MockReviewConnector extends TestSuite with MockFactory {
 
     def approval2iReview(id: String): CallHandler[Future[RequestOutcome[ApprovalProcessReview]]] =
       (mockReviewConnector
-        .approval2iReview(_: String)(_: ExecutionContext, _: HeaderCarrier))
+        .approval2iReview(_: String)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(id, *, *)
 
     def approval2iReviewComplete(id: String, info: ApprovalProcessStatusChange): CallHandler[Future[RequestOutcome[AuditInfo]]] =
       (mockReviewConnector
-        .approval2iReviewComplete(_: String, _: ApprovalProcessStatusChange)(_: ExecutionContext, _: HeaderCarrier))
+        .approval2iReviewComplete(_: String, _: ApprovalProcessStatusChange)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(id, info, *, *)
 
     def approval2iReviewPageInfo(id: String, pageUrl: String): CallHandler[Future[RequestOutcome[PageReviewDetail]]] =
       (mockReviewConnector
-        .approval2iReviewPageInfo(_: String, _: String)(_: ExecutionContext, _: HeaderCarrier))
+        .approval2iReviewPageInfo(_: String, _: String)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(id, pageUrl, *, *)
 
     def approval2iReviewPageComplete(id: String, pageUrl: String, info: PageReviewDetail): CallHandler[Future[RequestOutcome[Unit]]] =
       (mockReviewConnector
-        .approval2iReviewPageComplete(_: String, _: String, _: PageReviewDetail)(_: ExecutionContext, _: HeaderCarrier))
+        .approval2iReviewPageComplete(_: String, _: String, _: PageReviewDetail)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(
           where { (i: String, u: String, p: PageReviewDetail, _: ExecutionContext, _: HeaderCarrier) =>
             i == id &&
@@ -65,24 +65,24 @@ trait MockReviewConnector extends TestSuite with MockFactory {
     def approvalFactCheck(id: String): CallHandler[Future[RequestOutcome[ApprovalProcessReview]]] = {
 
       (mockReviewConnector
-        .approvalFactCheck(_: String)(_: ExecutionContext, _: HeaderCarrier))
+        .approvalFactCheck(_: String)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(id, *, *)
     }
 
     def approvalFactCheckComplete(id: String, info: ApprovalProcessStatusChange): CallHandler[Future[RequestOutcome[AuditInfo]]] = {
       (mockReviewConnector
-        .approvalFactCheckComplete(_: String, _: ApprovalProcessStatusChange)(_: ExecutionContext, _: HeaderCarrier))
+        .approvalFactCheckComplete(_: String, _: ApprovalProcessStatusChange)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(id, info, *, *)
     }
 
     def factCheckPageInfo(id: String, pageUrl: String): CallHandler[Future[RequestOutcome[PageReviewDetail]]] =
       (mockReviewConnector
-        .factCheckPageInfo(_: String, _: String)(_: ExecutionContext, _: HeaderCarrier))
+        .factCheckPageInfo(_: String, _: String)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(id, pageUrl, *, *)
 
     def factCheckPageComplete(id: String, pageUrl: String, info: PageReviewDetail): CallHandler[Future[RequestOutcome[Unit]]] =
       (mockReviewConnector
-        .factCheckPageComplete(_: String, _: String, _: PageReviewDetail)(_: ExecutionContext, _: HeaderCarrier))
+        .factCheckPageComplete(_: String, _: String, _: PageReviewDetail)(using _: ExecutionContext, _: HeaderCarrier))
         .expects(
           where { (i: String, u: String, p: PageReviewDetail, _: ExecutionContext, _: HeaderCarrier) =>
             i == id &&
