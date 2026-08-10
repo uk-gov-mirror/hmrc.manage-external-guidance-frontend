@@ -22,14 +22,13 @@ import models.{ApprovalResponse, RequestOutcome}
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.*
 import services.ApprovalService
-import uk.gov.hmrc.play.bootstrap.controller.WithUnsafeDefaultFormBinding
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class ApprovalController @Inject() (appConfig: AppConfig, approvalService: ApprovalService, mcc: MessagesControllerComponents) extends FrontendController(mcc) with WithUnsafeDefaultFormBinding {
+class ApprovalController @Inject() (appConfig: AppConfig, approvalService: ApprovalService, mcc: MessagesControllerComponents) extends FrontendController(mcc) {
 
   given config: AppConfig = appConfig
   given ec: ExecutionContext = mcc.executionContext

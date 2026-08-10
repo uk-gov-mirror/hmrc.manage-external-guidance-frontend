@@ -19,6 +19,7 @@ package pages
 import models.{PageReviewDetail, PageReviewStatus, YesNoAnswer}
 import play.api.http.Status
 import play.api.libs.json.Json
+import play.api.libs.ws.DefaultBodyWritables.*
 import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 import play.api.libs.ws.{WSRequest, WSResponse}
 import stubs.{AuditStub, AuthStub, ExternalGuidanceStub}
@@ -76,7 +77,10 @@ class TwoEyePageReviewControllerISpec extends IntegrationSpec {
           ExternalGuidanceStub.approval2iPageReviewComplete(Status.NO_CONTENT, Json.parse("{}"))
 
           val request: WSRequest = buildRequest("/2i-page-review/oct90005/pageUrl?title=Title&index=1")
-          val response: WSResponse = await(request.post(Json.obj("answer" -> YesNoAnswer.Yes.toString, "title" -> "Title", "index" -> 1)))
+
+
+          val response: WSResponse = await(request.post(Map("answer" -> YesNoAnswer.Yes.toString, "title" -> "Title", "index" -> 1.toString)))
+
           response.status shouldBe Status.SEE_OTHER
         }
       }
@@ -88,7 +92,7 @@ class TwoEyePageReviewControllerISpec extends IntegrationSpec {
           AuditStub.audit()
           AuthStub.authorise()
 
-          ExternalGuidanceStub.approval2iReviewComplete(Status.NO_CONTENT, Json.parse("{}"))
+
 
           val request: WSRequest = buildRequest("/2i-page-review/oct90005/pageUrl?index=1")
           val response: WSResponse = await(request.post(Json.obj("answer" -> "")))
