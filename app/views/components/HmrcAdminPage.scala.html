@@ -24,7 +24,6 @@
 @import uk.gov.hmrc.govukfrontend.views.html.components.TwoThirdsMainContent
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcStandardFooter
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcHead
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcLanguageSelectHelper
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcScripts
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.HmrcStandardPageParams
 @import uk.gov.hmrc.govukfrontend.views.html.components.FixedWidthPageLayout
@@ -35,27 +34,27 @@
 @import uk.gov.hmrc.hmrcfrontend.views.viewmodels.internalheader.InternalHeader
 @import uk.gov.hmrc.govukfrontend.views.html.components.implicits.*
 @import uk.gov.hmrc.hmrcfrontend.views.html.components.implicits.*
+@import uk.gov.hmrc.govukfrontend.views.html.components.GovukServiceNavigation
+@import uk.gov.hmrc.govukfrontend.views.Aliases.ServiceNavigation
+@import uk.gov.hmrc.govukfrontend.views.Implicits.RichServiceNavigation
 
 @this(
   govukLayout: GovukLayout,
   hmrcStandardFooter: HmrcStandardFooter,
-  hmrcLanguageSelectHelper: HmrcLanguageSelectHelper,
   hmrcScripts: HmrcScripts,
   govukBackLink: GovukBackLink,
   govukExitThisPage: GovukExitThisPage,
   defaultMainContent: TwoThirdsMainContent,
   fixedWidthPageLayout: FixedWidthPageLayout,
   hmrcInternalHeader: components.HmrcInternalHeaderAlt,
-  hmrcInternalHead: HmrcInternalHead
+  hmrcInternalHead: HmrcInternalHead,
+  govukServiceNavigation: GovukServiceNavigation
 )
 
 @(params: HmrcStandardPageParams, homepageUrl: Option[String])(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
 @import params.*
 
 @beforeContent = {
-  @if(isWelshTranslationAvailable) {
-    @hmrcLanguageSelectHelper()
-  }
   @backLink.map { link =>
     @govukBackLink(link)
   }
@@ -64,15 +63,33 @@
   }
 }
 
+@headerBlock = {
+
+@hmrcInternalHeader(
+    InternalHeader(
+        homepageUrl = homepageUrl.getOrElse("/"),
+        serviceName = Some(messages("service.name")),
+        serviceUrl = serviceURLs.serviceUrl.getOrElse(""),
+        useTudorCrown = Some(true)
+        ),
+        controllers.routes.ProcessAdminController.signOut.url
+    )
+
+    @if(isWelshTranslationAvailable) {
+        @govukServiceNavigation(
+        ServiceNavigation(
+        serviceName = Some(messages("service.name")),
+        serviceUrl = serviceURLs.serviceUrl
+        ).withLanguageToggle()
+        )
+    }
+
+}
+
 @govukLayout(
   pageTitle = pageTitle,
   headBlock = Some(hmrcInternalHead(headBlock = templateOverrides.additionalHeadBlock)),
-  headerBlock = Some(hmrcInternalHeader(InternalHeader(
-    homepageUrl = homepageUrl.getOrElse("/"),
-    serviceName = Some(messages("service.name")),
-    serviceUrl = serviceURLs.serviceUrl.getOrElse(""),
-    useTudorCrown = Some(true)
-  ), controllers.routes.ProcessAdminController.signOut.url)),
+  headerBlock = Some(headerBlock),
   scriptsBlock = Some(hmrcScripts(scriptsBlock = templateOverrides.additionalScriptsBlock)),
   footerBlock = Some(hmrcStandardFooter(accessibilityStatementUrl = serviceURLs.accessibilityStatementUrl)),
   beforeContentBlock = templateOverrides.beforeContentBlock orElse Some(beforeContent),

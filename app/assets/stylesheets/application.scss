@@ -3,7 +3,7 @@ $hmrc-assets-path: "/external-guidance/assets/lib/hmrc-frontend/hmrc/";
 
 $govuk-global-styles: true;
 
-@import "lib/govuk-frontend/dist/govuk/all";
+@import "lib/govuk-frontend/dist/govuk/index";
 @import "lib/hmrc-frontend/hmrc/all";
 
 .govuk-skip-link:link {text-decoration: underline; }
