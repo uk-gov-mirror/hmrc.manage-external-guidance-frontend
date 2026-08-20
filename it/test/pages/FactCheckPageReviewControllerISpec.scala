@@ -20,7 +20,7 @@ import models.{PageReviewDetail, PageReviewStatus, YesNoAnswer}
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
-import play.api.libs.ws.DefaultBodyWritables._
+import play.api.libs.ws.DefaultBodyWritables.*
 import play.api.libs.ws.{WSRequest, WSResponse}
 import stubs.{AuditStub, AuthStub, ExternalGuidanceStub}
 import support.IntegrationSpec
