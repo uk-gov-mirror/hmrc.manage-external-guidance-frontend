@@ -16,19 +16,18 @@
 
 package controllers
 
+import controllers.actions.LabelledDataAction
+import models.{LabelledDataUpdateStatus, RequestOutcome, UpdateDisplayDetails}
+import play.api.Logging
 import play.api.i18n.I18nSupport
 import play.api.libs.json.{JsValue, Json}
 import play.api.mvc.*
-import controllers.actions.LabelledDataAction
-import models.requests.IdentifierRequest
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import play.api.Logging
-
-import scala.concurrent.{ExecutionContext, Future}
-import java.nio.file.*
-import scala.util.{Failure, Success, Try}
-import models.{LabelledDataUpdateStatus, RequestOutcome, UpdateDisplayDetails}
 import views.html.labelleddata_upload_complete
+
+import java.nio.file.*
+import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success, Try}
 
 abstract class AbstractLabelledDataController (
                                       labelledDataSecuredAction: LabelledDataAction,

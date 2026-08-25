@@ -18,18 +18,17 @@ package controllers
 
 import config.ErrorHandler
 import controllers.actions.TwoEyeReviewerAction
-import models.errors.{DuplicateKeyError, MalformedResponseError, NotFoundError, StaleDataError, IncompleteDataError}
+import models.ApprovalStatus
+import models.audit.{PublishedEvent, TwoEyeReviewCompleteEvent}
+import models.errors.*
 import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc.*
 import services.{AuditService, ReviewService}
-import uk.gov.hmrc.play.bootstrap.controller.WithUnsafeDefaultFormBinding
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.*
-import models.ApprovalStatus
 import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
-import models.audit.{PublishedEvent, TwoEyeReviewCompleteEvent}
 
 @Singleton
 class TwoEyeReviewController @Inject() (
@@ -43,7 +42,6 @@ class TwoEyeReviewController @Inject() (
     reviewService: ReviewService,
     mcc: MessagesControllerComponents
 ) extends FrontendController(mcc)
-    with WithUnsafeDefaultFormBinding
     with I18nSupport {
 
   val logger: Logger = Logger(getClass)
